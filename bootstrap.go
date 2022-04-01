@@ -21,48 +21,46 @@ import (
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
 	"os"
-	"sync"
+	"os/exec"
+	"path"
 )
 
-var bootOnce = sync.Once{}
+type Bootstrap struct{}
 
 func (bootstrap *Bootstrap) Bootstrap(m *model.Model) error {
-	var err error = nil
-	bootOnce.Do(func() {
-		zitiRoot = os.Getenv("ZITI_ROOT")
-		if zitiRoot == "" {
-			err = fmt.Errorf("please set 'ZITI_ROOT'")
-			return
+	zitiRoot = os.Getenv("ZITI_ROOT")
+	if zitiRoot == "" {
+		if zitiPath, err := exec.LookPath("ziti"); err == nil {
+			zitiRoot = path.Dir(path.Dir(zitiPath))
+		} else {
+			return fmt.Errorf("ZITI_PATH not set and ziti executable not found in path. please set 'ZITI_ROOT'")
 		}
-		if fi, err := os.Stat(zitiRoot); err == nil {
+	}
+
+	if fi, err := os.Stat(zitiRoot); err == nil {
+		if !fi.IsDir() {
+			return fmt.Errorf("invalid 'ZITI_ROOT' (!directory)")
+		}
+	} else {
+		return fmt.Errorf("non-existent 'ZITI_ROOT'")
+	}
+
+	logrus.Debugf("ZITI_ROOT = [%s]", zitiRoot)
+
+	zitiDistRoot = os.Getenv("ZITI_DIST_ROOT")
+	if zitiDistRoot == "" {
+		zitiDistRoot = zitiRoot
+	} else {
+		if fi, err := os.Stat(zitiDistRoot); err == nil {
 			if !fi.IsDir() {
-				err = fmt.Errorf("invalid 'ZITI_ROOT' (!directory)")
-				return
+				return fmt.Errorf("invalid 'ZITI_DIST_ROOT' (!directory)")
 			}
-			logrus.Debugf("ZITI_ROOT = [%s]", zitiRoot)
 		} else {
-			err = fmt.Errorf("non-existent 'ZITI_ROOT'")
-			return
+			return fmt.Errorf("non-existent 'ZITI_DIST_BIN'")
 		}
+	}
 
-		zitiDistRoot = os.Getenv("ZITI_DIST_ROOT")
-		if zitiDistRoot == "" {
-			zitiDistRoot = zitiRoot
-		} else {
-			if fi, err := os.Stat(zitiDistRoot); err == nil {
-				if !fi.IsDir() {
-					err = fmt.Errorf("invalid 'ZITI_DIST_ROOT' (!directory)")
-					return
-				}
-				logrus.Debugf("ZITI_DIST_ROOT = [%s]", zitiDistRoot)
-			} else {
-				err = fmt.Errorf("non-existent 'ZITI_DIST_BIN'")
-				return
-			}
-		}
-	})
+	logrus.Debugf("ZITI_DIST_ROOT = [%s]", zitiDistRoot)
 
-	return err
+	return nil
 }
-
-type Bootstrap struct{}

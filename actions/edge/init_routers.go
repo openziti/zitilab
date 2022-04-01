@@ -5,7 +5,7 @@ import (
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/zitilab/cli"
+	zitilib_actions "github.com/openziti/zitilab/actions"
 	"path/filepath"
 	"strings"
 )
@@ -19,7 +19,7 @@ func InitEdgeRouters(componentSpec string, concurrency int) model.Action {
 
 func (action *initEdgeRoutersAction) Execute(m *model.Model) error {
 	return m.ForEachComponent(action.componentSpec, action.concurrency, func(c *model.Component) error {
-		if _, err := cli.Exec(m, "edge", "delete", "edge-router", c.PublicIdentity); err != nil {
+		if err := zitilib_actions.EdgeExec(m, "delete", "edge-router", c.PublicIdentity); err != nil {
 			return err
 		}
 
@@ -32,7 +32,7 @@ func (action *initEdgeRoutersAction) createAndEnrollRouter(c *model.Component) e
 
 	jwtFileName := filepath.Join(model.ConfigBuild(), c.PublicIdentity+".jwt")
 
-	_, err := cli.Exec(c.GetModel(), "edge", "create", "edge-router", c.PublicIdentity, "-j",
+	err := zitilib_actions.EdgeExec(c.GetModel(), "create", "edge-router", c.PublicIdentity, "-j",
 		"--jwt-output-file", jwtFileName,
 		"-a", strings.Join(c.Tags, ","))
 

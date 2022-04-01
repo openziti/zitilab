@@ -24,7 +24,7 @@ import (
 	"github.com/openziti/fabric/pb/mgmt_pb"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/config"
-	"github.com/openziti/zitilab/cli"
+	zitilib_actions "github.com/openziti/zitilab/actions"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net"
@@ -54,17 +54,17 @@ type ClientMetrics struct {
 }
 
 func (metrics *ClientMetrics) Activate(run model.Run) error {
-	if _, err := cli.Exec(run.GetModel(), "edge", "delete", "identity", "metrics-host"); err != nil {
+	if err := zitilib_actions.EdgeExec(run.GetModel(), "delete", "identity", "metrics-host"); err != nil {
 		return err
 	}
 
 	jwtFilePath := run.GetLabel().GetFilePath("metrics-host.jwt")
-	if _, err := cli.Exec(run.GetModel(), "edge", "create", "identity", "service", "metrics-host", "-a", "metrics-host", "-o", jwtFilePath); err != nil {
+	if err := zitilib_actions.EdgeExec(run.GetModel(), "create", "identity", "service", "metrics-host", "-a", "metrics-host", "-o", jwtFilePath); err != nil {
 		return err
 	}
 
 	identityConfigPath := run.GetLabel().GetFilePath("metrics-host.json")
-	if _, err := cli.Exec(run.GetModel(), "edge", "enroll", jwtFilePath, "-o", identityConfigPath); err != nil {
+	if err := zitilib_actions.EdgeExec(run.GetModel(), "enroll", jwtFilePath, "-o", identityConfigPath); err != nil {
 		return err
 	}
 
