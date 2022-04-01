@@ -1,5 +1,5 @@
 /*
-	Copyright 2019 NetFoundry, Inc.
+	Copyright 2019 NetFoundry Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -18,12 +18,11 @@ package zitilib_runlevel_1_configuration
 
 import (
 	"fmt"
-	"os"
-	"path"
-
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
+	"os"
+	"path"
 )
 
 func Fabric() model.ConfigurationStage {
@@ -56,15 +55,6 @@ func (f *fabric) Configure(run model.Run) error {
 	}
 
 	return storeIps(ips)
-}
-
-func storeIps(ips map[string]string) error {
-	ipFile := path.Join(model.PkiBuild(), "ips")
-	data, err := yaml.Marshal(ips)
-	if err != nil {
-		return err
-	}
-	return os.WriteFile(ipFile, data, 0600)
 }
 
 func haveIpsChanged(m *model.Model) (bool, error) {
@@ -112,6 +102,15 @@ func haveIpsChanged(m *model.Model) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func storeIps(ips map[string]string) error {
+	ipFile := path.Join(model.PkiBuild(), "ips")
+	data, err := yaml.Marshal(ips)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(ipFile, data, 0600)
 }
 
 func hasExisitingPki() (bool, error) {

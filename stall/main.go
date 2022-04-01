@@ -3,17 +3,14 @@ package main
 import (
 	"embed"
 	_ "embed"
-	"os"
-	"time"
-
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/lib/binding"
 	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/aws_ssh_key"
-	semaphore_0 "github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/semaphore"
-	terraform_0 "github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/terraform"
+	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/semaphore"
+	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/terraform"
 	"github.com/openziti/fablab/kernel/lib/runlevel/1_configuration/config"
 	distribution "github.com/openziti/fablab/kernel/lib/runlevel/3_distribution"
 	"github.com/openziti/fablab/kernel/lib/runlevel/3_distribution/rsync"
@@ -24,6 +21,8 @@ import (
 	"github.com/openziti/zitilab"
 	"github.com/openziti/zitilab/actions/edge"
 	zitilib_runlevel_1_configuration "github.com/openziti/zitilab/runlevel/1_configuration"
+	"os"
+	"time"
 )
 
 //go:embed configs
@@ -161,11 +160,11 @@ var m = &model.Model{
 	},
 
 	Actions: model.ActionBinders{
-		"bootstrap":          actions.NewBootstrapAction(),
-		"start":              actions.NewStartAction(),
+		"bootstrap":          NewBootstrapAction(),
+		"start":              NewStartAction(),
 		"stop":               model.Bind(component.StopInParallel("*", 15)),
 		"stopSdkApps":        model.Bind(component.StopInParallel(".sdk-app", 15)),
-		"syncModelEdgeState": actions.NewSyncModelEdgeStateAction(),
+		"syncModelEdgeState": NewSyncModelEdgeStateAction(),
 		"clean": model.Bind(actions.Workflow(
 			component.StopInParallel("*", 15),
 			host.GroupExec("*", 25, "rm -f logs/*"),
@@ -204,9 +203,7 @@ func main() {
 	m.AddActivationActions("stop", "bootstrap", "start", "syncModelEdgeState")
 	// m.VarConfig.EnableDebugLogger()
 
-	model.AddBootstrapExtension(zitilab.BootstrapWithFallbacks(
-		&zitilab.BootstrapFromEnv{},
-	))
+	model.AddBootstrapExtension(&zitilab.BootstrapFromEnv{})
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)
 	model.AddBootstrapExtension(aws_ssh_key.KeyManager)
 

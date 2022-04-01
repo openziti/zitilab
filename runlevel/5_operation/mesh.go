@@ -1,5 +1,5 @@
 /*
-	Copyright 2019 NetFoundry, Inc.
+	Copyright 2019 NetFoundry Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -18,13 +18,12 @@ package zitilib_runlevel_5_operation
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/openziti/channel"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/identity/dotziti"
 	"github.com/openziti/transport/v2"
 	"github.com/sirupsen/logrus"
+	"time"
 )
 
 func Mesh(closer <-chan struct{}) model.OperatingStage {
