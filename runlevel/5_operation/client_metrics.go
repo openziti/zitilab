@@ -25,6 +25,7 @@ import (
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/config"
 	zitilib_actions "github.com/openziti/zitilab/actions"
+	"github.com/openziti/zitilab/cli"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net"
@@ -64,7 +65,7 @@ func (metrics *ClientMetrics) Activate(run model.Run) error {
 	}
 
 	identityConfigPath := run.GetLabel().GetFilePath("metrics-host.json")
-	if err := zitilib_actions.EdgeExec(run.GetModel(), "enroll", jwtFilePath, "-o", identityConfigPath); err != nil {
+	if _, err := cli.Exec(run.GetModel(), "edge", "enroll", jwtFilePath, "-o", identityConfigPath); err != nil {
 		return err
 	}
 

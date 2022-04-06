@@ -3,6 +3,7 @@ package edge
 import (
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/model"
+	zitilib_actions "github.com/openziti/zitilab/actions"
 	"github.com/openziti/zitilab/cli"
 	"path/filepath"
 	"strings"
@@ -17,7 +18,7 @@ func InitIdentities(componentSpec string, concurrency int) model.Action {
 
 func (action *initIdentitiesAction) Execute(m *model.Model) error {
 	return m.ForEachComponent(action.componentSpec, action.concurrency, func(c *model.Component) error {
-		if _, err := cli.Exec(m, "edge", "delete", "identity", c.PublicIdentity); err != nil {
+		if err := zitilib_actions.EdgeExec(m, "delete", "identity", c.PublicIdentity); err != nil {
 			return err
 		}
 
@@ -30,7 +31,7 @@ func (action *initIdentitiesAction) createAndEnrollIdentity(c *model.Component) 
 
 	jwtFileName := filepath.Join(model.ConfigBuild(), c.PublicIdentity+".jwt")
 
-	_, err := cli.Exec(c.GetModel(), "edge", "create", "identity", "service", c.PublicIdentity,
+	err := zitilib_actions.EdgeExec(c.GetModel(), "create", "identity", "service", c.PublicIdentity,
 		"--jwt-output-file", jwtFileName,
 		"-a", strings.Join(c.Tags, ","))
 

@@ -31,11 +31,11 @@ var configResource embed.FS
 type scaleStrategy struct{}
 
 func (self scaleStrategy) IsScaled(entity model.Entity) bool {
-	return entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("edge-router")
+	return entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("scaled")
 }
 
 func (self scaleStrategy) GetEntityCount(entity model.Entity) uint32 {
-	if entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("edge-router") {
+	if entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("scaled") {
 		return 4
 	}
 	return 1
@@ -74,14 +74,26 @@ var m = &model.Model{
 			Site:   "us-east-1a",
 			Hosts: model.Hosts{
 				"ctrl": {
-					Scope:        model.Scope{Tags: model.Tags{"ctrl"}},
 					InstanceType: "c5.large",
 					Components: model.Components{
 						"ctrl": {
+							Scope:          model.Scope{Tags: model.Tags{"ctrl"}},
 							BinaryName:     "ziti-controller",
 							ConfigSrc:      "ctrl.yml",
 							ConfigName:     "ctrl.yml",
 							PublicIdentity: "ctrl",
+						},
+					},
+				},
+				"metrics-router": {
+					InstanceType: "c5.large",
+					Components: model.Components{
+						"router": {
+							Scope:          model.Scope{Tags: model.Tags{"edge-router", "no-transit"}},
+							BinaryName:     "ziti-router",
+							ConfigSrc:      "router.yml",
+							ConfigName:     "metrics-router.yml",
+							PublicIdentity: "metrics-router",
 						},
 					},
 				},
@@ -92,20 +104,23 @@ var m = &model.Model{
 			Site:   "us-west-2b",
 			Hosts: model.Hosts{
 				"router-west-{{ .ScaleIndex }}": {
-					Scope:        model.Scope{Tags: model.Tags{"edge-router"}},
+					Scope:        model.Scope{Tags: model.Tags{"scaled"}},
 					InstanceType: "c5.large",
 					Components: model.Components{
 						"router": {
+							Scope:          model.Scope{Tags: model.Tags{"edge-router", "tunneler", "terminator"}},
 							BinaryName:     "ziti-router",
 							ConfigSrc:      "router.yml",
-							ConfigName:     "router.yml",
+							ConfigName:     "router-west-{{ .Host.ScaleIndex }}.yml",
 							PublicIdentity: "router-west-{{ .Host.ScaleIndex }}",
+							RunWithSudo:    true,
+						},
+						"loop.listener": {
+							Scope:          model.Scope{Tags: model.Tags{"sdk-app"}},
+							BinaryName:     "ziti-fabric-test",
+							PublicIdentity: "test-host-{{ .Host.ScaleIndex }}",
 						},
 					},
-				},
-				"client": {
-					Scope:        model.Scope{Tags: model.Tags{"client"}},
-					InstanceType: "c5.large",
 				},
 			},
 		},
@@ -114,20 +129,25 @@ var m = &model.Model{
 			Site:   "ap-southeast-1a",
 			Hosts: model.Hosts{
 				"router-ap-{{ .ScaleIndex }}": {
-					Scope:        model.Scope{Tags: model.Tags{"edge-router"}},
+					Scope:        model.Scope{Tags: model.Tags{"scaled"}},
 					InstanceType: "c5.large",
 					Components: model.Components{
 						"router": {
+							Scope:          model.Scope{Tags: model.Tags{"edge-router", "tunneler", "initiator"}},
 							BinaryName:     "ziti-router",
 							ConfigSrc:      "router.yml",
-							ConfigName:     "router.yml",
+							ConfigName:     "router-ap-{{ .Host.ScaleIndex }}.yml",
 							PublicIdentity: "router-ap-{{ .Host.ScaleIndex }}",
+							RunWithSudo:    true,
+						},
+						"loop": {
+							Scope:          model.Scope{Tags: model.Tags{"client", "sdk-app"}},
+							BinaryName:     "ziti-fabric-test",
+							ConfigSrc:      "test.loop3.yml",
+							ConfigName:     "test.loop3.yml",
+							PublicIdentity: "test-client-{{ .Host.ScaleIndex }}",
 						},
 					},
-				},
-				"server": {
-					Scope:        model.Scope{Tags: model.Tags{"server"}},
-					InstanceType: "c5.large",
 				},
 			},
 		},

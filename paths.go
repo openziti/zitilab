@@ -17,7 +17,6 @@
 package zitilab
 
 import (
-	"fmt"
 	"github.com/openziti/fablab/kernel/lib/runlevel/2_kitting/devkit"
 	"github.com/openziti/fablab/kernel/model"
 	"path/filepath"
@@ -56,10 +55,6 @@ func DefaultZitiBinaries() model.ConfigurationStage {
 		"ziti-controller",
 		"ziti-fabric-test",
 		"ziti-router",
-	}
-
-	for _, binary := range zitiBinaries {
-		fmt.Printf("adding devkit %v/%v\n", ZitiDistBinaries(), binary)
 	}
 
 	return devkit.DevKitF(ZitiDistBinaries, zitiBinaries)

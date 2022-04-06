@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	fablib_5_operation "github.com/openziti/fablab/kernel/lib/runlevel/5_operation"
 	"github.com/openziti/fablab/kernel/model"
+	"github.com/openziti/zitilab/models"
 	zitilib_5_operation "github.com/openziti/zitilab/runlevel/5_operation"
 	"strings"
 )
@@ -38,6 +40,37 @@ func (self *stageFactory) Build(m *model.Model) error {
 
 	m.AddOperatingStage(runPhase)
 	m.AddOperatingStage(fablib_5_operation.Persist())
+
+	return nil
+}
+
+func (_ *stageFactory) listeners(m *model.Model) error {
+	components := m.SelectComponents("#loop.listener")
+	if len(components) < 1 {
+		return fmt.Errorf("no '%v' components in model", "#loop.listener")
+	}
+
+	for _, c := range components {
+		remoteConfigFile := fmt.Sprintf("/home/%v/fablab/cfg/%v.json", m.MustVariable("credentials.ssh.username"), c.PublicIdentity)
+		stage := zitilib_5_operation.Loop3Listener(c.GetHost(), nil, "tcp:0.0.0.0.8171", "--config-file", remoteConfigFile)
+		m.AddOperatingStage(stage)
+	}
+
+	return nil
+}
+
+func (_ *stageFactory) dialers(m *model.Model, phase fablib_5_operation.Phase) error {
+	var components []*model.Component
+	components = m.SelectComponents(models.ClientTag)
+	if len(components) < 1 {
+		return fmt.Errorf("no '%v' components in model", models.ClientTag)
+	}
+
+	for _, c := range components {
+		remoteConfigFile := fmt.Sprintf("/home/%v/fablab/cfg/%v.json", m.MustVariable("credentials.ssh.username"), c.PublicIdentity)
+		stage := zitilib_5_operation.Loop3Dialer(c.GetHost(), c.ConfigName, "tcp:test.service:8171", phase.AddJoiner(), "--config-file", remoteConfigFile)
+		m.AddOperatingStage(stage)
+	}
 
 	return nil
 }
