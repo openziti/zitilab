@@ -41,7 +41,7 @@ ctrl:
 
 # the endpoint that management tools connect to the controller over.
 mgmt:
-  listener: tls:127.0.0.1:10000
+  listener: tls:0.0.0.0:10000
     #options:
     # (optional) settings
     # set the maximum number of connect requests that are buffered and waiting to be acknowledged (1 to 5000, default 1000)

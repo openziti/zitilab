@@ -19,8 +19,8 @@ import (
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
 	"github.com/openziti/zitilab"
+	"github.com/openziti/zitilab/actions/edge"
 	zitilib_runlevel_1_configuration "github.com/openziti/zitilab/runlevel/1_configuration"
-	stallActions "github.com/openziti/zitilab/stall/actions"
 	"os"
 	"time"
 )
@@ -53,6 +53,12 @@ var m = &model.Model{
 				"edge": model.Variables{
 					"username": "admin",
 					"password": "admin",
+				},
+			},
+			"metrics": model.Variables{
+				"influxdb": model.Variables{
+					"url": "http://localhost:8086",
+					"db":  "ziti",
 				},
 			},
 		},
@@ -88,8 +94,8 @@ var m = &model.Model{
 				"metrics-router": {
 					InstanceType: "c5.large",
 					Components: model.Components{
-						"router": {
-							Scope:          model.Scope{Tags: model.Tags{"edge-router", "no-transit"}},
+						"metrics-router": {
+							Scope:          model.Scope{Tags: model.Tags{"edge-router", "no-traversal"}},
 							BinaryName:     "ziti-router",
 							ConfigSrc:      "router.yml",
 							ConfigName:     "metrics-router.yml",
@@ -107,7 +113,7 @@ var m = &model.Model{
 					Scope:        model.Scope{Tags: model.Tags{"scaled"}},
 					InstanceType: "c5.large",
 					Components: model.Components{
-						"router": {
+						"router-west-{{ .Host.ScaleIndex }}": {
 							Scope:          model.Scope{Tags: model.Tags{"edge-router", "tunneler", "terminator"}},
 							BinaryName:     "ziti-router",
 							ConfigSrc:      "router.yml",
@@ -115,8 +121,8 @@ var m = &model.Model{
 							PublicIdentity: "router-west-{{ .Host.ScaleIndex }}",
 							RunWithSudo:    true,
 						},
-						"loop.listener": {
-							Scope:          model.Scope{Tags: model.Tags{"sdk-app"}},
+						"loop.listener-{{ .Host.ScaleIndex }}": {
+							Scope:          model.Scope{Tags: model.Tags{"sdk-app", "service"}},
 							BinaryName:     "ziti-fabric-test",
 							PublicIdentity: "test-host-{{ .Host.ScaleIndex }}",
 						},
@@ -132,7 +138,7 @@ var m = &model.Model{
 					Scope:        model.Scope{Tags: model.Tags{"scaled"}},
 					InstanceType: "c5.large",
 					Components: model.Components{
-						"router": {
+						"router-ap-{{ .Host.ScaleIndex }}": {
 							Scope:          model.Scope{Tags: model.Tags{"edge-router", "tunneler", "initiator"}},
 							BinaryName:     "ziti-router",
 							ConfigSrc:      "router.yml",
@@ -140,8 +146,8 @@ var m = &model.Model{
 							PublicIdentity: "router-ap-{{ .Host.ScaleIndex }}",
 							RunWithSudo:    true,
 						},
-						"loop": {
-							Scope:          model.Scope{Tags: model.Tags{"client", "sdk-app"}},
+						"loop-client-{{ .Host.ScaleIndex }}": {
+							Scope:          model.Scope{Tags: model.Tags{"sdk-app", "client"}},
 							BinaryName:     "ziti-fabric-test",
 							ConfigSrc:      "test.loop3.yml",
 							ConfigName:     "test.loop3.yml",
@@ -154,18 +160,15 @@ var m = &model.Model{
 	},
 
 	Actions: model.ActionBinders{
-		"bootstrap": stallActions.NewBootstrapAction(),
-		"start":     stallActions.NewStartAction(),
-		"stop": func(m *model.Model) model.Action {
-			return component.StopInParallel("*", 15)
-		},
-		"syncModelEdgeState": stallActions.NewSyncModelEdgeStateAction(),
-		"clean": func(m *model.Model) model.Action {
-			return actions.Workflow(
-				component.StopInParallel("*", 15),
-				host.GroupExec("*", 25, "rm -f logs/*"),
-			)
-		},
+		"bootstrap":          NewBootstrapAction(),
+		"start":              NewStartAction(),
+		"stop":               model.Bind(component.StopInParallel("*", 15)),
+		"syncModelEdgeState": NewSyncModelEdgeStateAction(),
+		"clean": model.Bind(actions.Workflow(
+			component.StopInParallel("*", 15),
+			host.GroupExec("*", 25, "rm -f logs/*"),
+		)),
+		"login": model.Bind(edge.Login("#ctrl")),
 	},
 
 	Infrastructure: model.InfrastructureStages{
@@ -175,7 +178,10 @@ var m = &model.Model{
 	},
 
 	Configuration: model.ConfigurationStages{
-		zitilib_runlevel_1_configuration.IfNoPki(zitilib_runlevel_1_configuration.Fabric()),
+		zitilib_runlevel_1_configuration.IfPkiNeedsRefresh(
+			zitilib_runlevel_1_configuration.Fabric(),
+			zitilib_runlevel_1_configuration.DotZiti(),
+		),
 		config.Component(),
 		zitilab.DefaultZitiBinaries(),
 	},

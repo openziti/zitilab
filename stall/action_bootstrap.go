@@ -14,7 +14,7 @@
 	limitations under the License.
 */
 
-package actions
+package main
 
 import (
 	"github.com/openziti/fablab/kernel/lib/actions"
@@ -34,8 +34,6 @@ func NewBootstrapAction() model.ActionBinder {
 }
 
 func (a *bootstrapAction) bind(m *model.Model) model.Action {
-	//sshUsername := m.MustStringVariable("credentials.ssh.username")
-
 	workflow := actions.Workflow()
 
 	workflow.AddAction(host.GroupExec("*", 25, "rm -f logs/*"))
@@ -44,19 +42,10 @@ func (a *bootstrapAction) bind(m *model.Model) model.Action {
 	workflow.AddAction(component.Start("#ctrl"))
 	workflow.AddAction(semaphore.Sleep(2 * time.Second))
 
-	//workflow.AddAction(host.GroupExec("*", 25,
-	//	fmt.Sprintf("mkdir -p /home/%s/.ziti", sshUsername),
-	//	fmt.Sprintf("rm -f /home/%s/.ziti/identities.yml", sshUsername),
-	//	fmt.Sprintf("ln -s /home/%s/fablab/cfg/remote_identities.yml /home/%s/.ziti/identities.yml", sshUsername, sshUsername),
-	//))
+	workflow.AddAction(edge.Login("#ctrl"))
 
-	// HasControllerComponent = "component.ctrl"
-	workflow.AddAction(edge.Login("component#ctrl"))
-
-	// EdgeRouterTag = ".edge-router"
-	edgeRouters := ".edge-router"
-	workflow.AddAction(component.StopInParallel(edgeRouters, 25))
-	workflow.AddAction(edge.InitEdgeRouters(edgeRouters, 2))
+	workflow.AddAction(component.StopInParallel(models.EdgeRouterTag, 25))
+	workflow.AddAction(edge.InitEdgeRouters(models.EdgeRouterTag, 2))
 	workflow.AddAction(edge.InitIdentities(models.SdkAppTag, 2))
 
 	workflow.AddAction(zitilib_actions.Edge("create", "config", "test-host", "host.v2", `
@@ -72,7 +61,8 @@ func (a *bootstrapAction) bind(m *model.Model) model.Action {
 									 "interval" : "5s",
 									 "timeout" : "100ms",
 									 "actions" : [
-										 { "trigger" : "fail", "action" : "increase cost 10" }
+										 { "trigger" : "fail", "action" : "mark unhealthy" },
+										 { "trigger" : "pass", "action" : "mark healthy" }
 									 ]
 								}
 						   ]
@@ -99,7 +89,7 @@ func (a *bootstrapAction) bind(m *model.Model) model.Action {
 
 	workflow.AddAction(zitilib_actions.Edge("create", "edge-router-policy", "metrics-routers", "--edge-router-roles", "@metrics-router", "--identity-roles", "#all"))
 
-	workflow.AddAction(zitilib_actions.Edge("create", "service-edge-router-policy", "test", "--service-roles", "@test", "--edge-router-roles", "#initiator,#terminator"))
+	workflow.AddAction(zitilib_actions.Edge("create", "service-edge-router-policy", "test", "--semantic", "AnyOf", "--service-roles", "@test", "--edge-router-roles", "#initiator,#terminator"))
 	workflow.AddAction(zitilib_actions.Edge("create", "service-edge-router-policy", "metrics", "--service-roles", "@metrics", "--edge-router-roles", "@metrics-router"))
 
 	workflow.AddAction(component.Stop(models.ControllerTag))

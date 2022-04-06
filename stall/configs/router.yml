@@ -36,9 +36,11 @@ link:
     - binding:          transport
 
 listeners:
+{{if .Component.HasTag "tunneler"}}
   - binding: tunnel
     options:
       mode: tproxy
+{{end}}
   - binding: edge
     address: tls:0.0.0.0:6262
     options:

@@ -32,9 +32,9 @@ func (action *initEdgeRoutersAction) createAndEnrollRouter(c *model.Component) e
 
 	jwtFileName := filepath.Join(model.ConfigBuild(), c.PublicIdentity+".jwt")
 
-	args := []string{"create", "edge-router", c.PublicIdentity, "-j",
-		"--jwt-output-file", jwtFileName,
-		"-a", strings.Join(c.Tags, ",")}
+	attributes := strings.Join(c.Tags, ",")
+
+	args := []string{"create", "edge-router", c.PublicIdentity, "-j", "--jwt-output-file", jwtFileName, "-a", attributes}
 
 	isTunneler := c.HasLocalOrAncestralTag("tunneler")
 	if isTunneler {
@@ -45,10 +45,14 @@ func (action *initEdgeRoutersAction) createAndEnrollRouter(c *model.Component) e
 		args = append(args, "--no-traversal")
 	}
 
-	err := zitilib_actions.EdgeExec(c.GetModel(), args...)
-
-	if err != nil {
+	if err := zitilib_actions.EdgeExec(c.GetModel(), args...); err != nil {
 		return err
+	}
+
+	if isTunneler {
+		if err := zitilib_actions.EdgeExec(c.GetModel(), "update", "identity", c.PublicIdentity, "-a", attributes); err != nil {
+			return err
+		}
 	}
 
 	remoteJwt := "/home/ubuntu/fablab/cfg/" + c.PublicIdentity + ".jwt"

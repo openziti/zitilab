@@ -14,27 +14,25 @@
 	limitations under the License.
 */
 
-package actions
+package main
 
 import (
 	"github.com/openziti/fablab/kernel/lib/actions"
-	"github.com/openziti/fablab/kernel/lib/actions/component"
-	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
 	"github.com/openziti/fablab/kernel/model"
-	"time"
+	"github.com/openziti/zitilab/actions/edge"
+	"github.com/openziti/zitilab/models"
 )
 
-func NewStartAction() model.ActionBinder {
-	action := &startAction{}
+func NewSyncModelEdgeStateAction() model.ActionBinder {
+	action := &syncModelEdgeStateAction{}
 	return action.bind
 }
 
-func (a *startAction) bind(*model.Model) model.Action {
+func (a *syncModelEdgeStateAction) bind(*model.Model) model.Action {
 	workflow := actions.Workflow()
-	workflow.AddAction(component.Start("#ctrl"))
-	workflow.AddAction(semaphore.Sleep(2 * time.Second))
-	workflow.AddAction(component.StartInParallel("host.edge-router", 25))
+	workflow.AddAction(edge.Login("#ctrl"))
+	workflow.AddAction(edge.SyncModelEdgeState(models.EdgeRouterTag))
 	return workflow
 }
 
-type startAction struct{}
+type syncModelEdgeStateAction struct{}
