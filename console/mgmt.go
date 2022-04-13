@@ -19,11 +19,11 @@ package console
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
+	"github.com/openziti/channel"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/foundation/channel2"
 	"github.com/openziti/foundation/identity/dotziti"
-	"github.com/openziti/foundation/transport"
+	"github.com/openziti/transport"
 	"github.com/sirupsen/logrus"
 	"sync"
 	"time"
@@ -36,10 +36,21 @@ func newMgmt(server *Server) *mgmt {
 }
 
 func (mgmt *mgmt) execute() error {
+	waitGroup := &sync.WaitGroup{}
+	waitGroup.Add(1)
+
+	bindHandler := channel.BindHandlerF(func(binding channel.Binding) error {
+		binding.AddTypedReceiveHandler(newMgmtMetrics(mgmt.server))
+		binding.AddTypedReceiveHandler(newMgmtRouters(mgmt.server))
+		binding.AddTypedReceiveHandler(newMgmtLinks(mgmt.server))
+		binding.AddCloseHandler(&closeWatcher{waitGroup})
+
+		return nil
+	})
 	if endpoint, id, err := dotziti.LoadIdentity(model.ActiveInstanceId()); err == nil {
 		if address, err := transport.ParseAddress(endpoint); err == nil {
-			dialer := channel2.NewClassicDialer(id, address, nil)
-			if ch, err := channel2.NewChannel("mgmt", dialer, nil); err == nil {
+			dialer := channel.NewClassicDialer(id, address, nil)
+			if ch, err := channel.NewChannel("mgmt", dialer, bindHandler, nil); err == nil {
 				mgmt.ch = ch
 			} else {
 				return fmt.Errorf("error connecting mgmt channel (%w)", err)
@@ -51,9 +62,6 @@ func (mgmt *mgmt) execute() error {
 		return fmt.Errorf("unable to load 'fablab' identity (%w)", err)
 	}
 
-	mgmt.ch.AddReceiveHandler(newMgmtMetrics(mgmt.server))
-	mgmt.ch.AddReceiveHandler(newMgmtRouters(mgmt.server))
-	mgmt.ch.AddReceiveHandler(newMgmtLinks(mgmt.server))
 	go mgmt.pollNetworkShape()
 
 	request := &mgmt_pb.StreamMetricsRequest{
@@ -66,21 +74,12 @@ func (mgmt *mgmt) execute() error {
 		logrus.Fatalf("error marshaling metrics request (%v)", err)
 	}
 
-	requestMsg := channel2.NewMessage(int32(mgmt_pb.ContentType_StreamMetricsRequestType), body)
-	errCh, err := mgmt.ch.SendAndSync(requestMsg)
-	if err != nil {
-		logrus.Fatalf("error queuing metrics request (%v)", err)
-	}
-	select {
-	case err := <-errCh:
-		if err != nil {
-			logrus.Fatalf("error sending metrics request (%v)", err)
-		}
-	case <-time.After(5 * time.Second):
-		logrus.Fatal("timeout")
+	requestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_StreamMetricsRequestType), body)
+	if err = requestMsg.WithTimeout(time.Second * 5).SendAndWaitForWire(mgmt.ch); err != nil {
+		logrus.Fatalf("error sending metrics request (%v)", err)
 	}
 
-	waitForChannelClose(mgmt.ch)
+	waitGroup.Wait()
 
 	return nil
 }
@@ -92,7 +91,7 @@ func (mgmt *mgmt) pollNetworkShape() {
 		if err != nil {
 			logrus.Fatalf("error marshaling list routers request (%v)", err)
 		}
-		routersRequestMsg := channel2.NewMessage(int32(mgmt_pb.ContentType_ListRoutersRequestType), body)
+		routersRequestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_ListRoutersRequestType), body)
 		err = mgmt.ch.Send(routersRequestMsg)
 		if err != nil {
 			logrus.Fatalf("error queuing list routers request (%v)", err)
@@ -103,7 +102,7 @@ func (mgmt *mgmt) pollNetworkShape() {
 		if err != nil {
 			logrus.Fatalf("error marshaling list links request (%v)", err)
 		}
-		linksRequestMsg := channel2.NewMessage(int32(mgmt_pb.ContentType_ListLinksRequestType), body)
+		linksRequestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_ListLinksRequestType), body)
 		err = mgmt.ch.Send(linksRequestMsg)
 		if err != nil {
 			logrus.Fatalf("error queuing list links request (%v)", err)
@@ -113,24 +112,15 @@ func (mgmt *mgmt) pollNetworkShape() {
 	}
 }
 
-func waitForChannelClose(ch channel2.Channel) {
-	waitGroup := &sync.WaitGroup{}
-	waitGroup.Add(1)
-
-	ch.AddCloseHandler(&closeWatcher{waitGroup})
-
-	waitGroup.Wait()
-}
-
 type closeWatcher struct {
 	waitGroup *sync.WaitGroup
 }
 
-func (watcher *closeWatcher) HandleClose(ch channel2.Channel) {
+func (watcher *closeWatcher) HandleClose(ch channel.Channel) {
 	watcher.waitGroup.Done()
 }
 
 type mgmt struct {
-	ch     channel2.Channel
+	ch     channel.Channel
 	server *Server
 }

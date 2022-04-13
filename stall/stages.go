@@ -82,7 +82,7 @@ func (_ *stageFactory) dialers(m *model.Model, phase fablib_5_operation.Phase) e
 	c := components[0]
 
 	remoteConfigFile := fmt.Sprintf("/home/%v/fablab/cfg/%v.json", m.MustVariable("credentials.ssh.username"), c.PublicIdentity)
-	stage := zitilib_5_operation.Loop3Dialer(c.GetHost(), c.ConfigName, "tcp:test.service:8171", phase.AddJoiner(), "--config-file", remoteConfigFile)
+	stage := zitilib_5_operation.Loop3Dialer(c.GetHost(), c.ConfigName, "tcp:test.service:8171", phase.AddJoiner(), "--config-file", remoteConfigFile, "-d")
 	m.AddOperatingStage(stage)
 
 	return nil

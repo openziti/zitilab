@@ -17,7 +17,7 @@ workloads:
     # 128 MB/s = 1 Gb/s
 
     dialer:
-      txRequests: 10000
+      txRequests: 1000000
       txPacing: 0
       txMaxJitter: 0
       rxTimeout: 240000
@@ -35,7 +35,7 @@ workloads:
       payloadMaxBytes: 10240
       latencyFrequency: 20
 
-        #metrics:
-        #  service: metrics
-        #  interval: 15s
-        #  clientId: {{.Component.PublicIdentity}}
+metrics:
+  service: metrics
+  interval: 15s
+  clientId: {{.Component.PublicIdentity}}

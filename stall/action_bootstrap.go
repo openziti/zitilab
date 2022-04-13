@@ -58,7 +58,7 @@ func (a *bootstrapAction) bind(m *model.Model) model.Action {
 							"portChecks" : [
 								{
 									 "address" : "localhost:8171",
-									 "interval" : "5s",
+									 "interval" : "1s",
 									 "timeout" : "100ms",
 									 "actions" : [
 										 { "trigger" : "fail", "action" : "mark unhealthy" },

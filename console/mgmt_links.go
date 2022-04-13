@@ -18,8 +18,8 @@ package console
 
 import (
 	"github.com/golang/protobuf/proto"
+	"github.com/openziti/channel"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/foundation/channel2"
 	"github.com/sirupsen/logrus"
 )
 
@@ -31,7 +31,7 @@ func (mgmtLinks *mgmtLinks) ContentType() int32 {
 	return int32(mgmt_pb.ContentType_ListLinksResponseType)
 }
 
-func (mgmtLinks *mgmtLinks) HandleReceive(msg *channel2.Message, ch channel2.Channel) {
+func (mgmtLinks *mgmtLinks) HandleReceive(msg *channel.Message, ch channel.Channel) {
 	response := &mgmt_pb.ListLinksResponse{}
 	err := proto.Unmarshal(msg.Body, response)
 	if err != nil {
