@@ -26,13 +26,16 @@ func (self *stageFactory) Build(m *model.Model) error {
 	m.AddOperatingActions("syncModelEdgeState")
 	m.AddOperatingStage(fablib_5_operation.InfluxMetricsReporter())
 	//m.AddOperatingStage(zitilib_5_operation.Mesh(runPhase.GetCloser()))
-	m.AddOperatingStage(zitilib_5_operation.ModelMetricsWithIdMapper(runPhase.GetCloser(), func(id string) string {
+	idMapper := func(id string) string {
 		if id == "ctrl" {
 			return "#ctrl"
 		}
 		id = strings.ReplaceAll(id, ".", ":")
 		return "component.edgeId:" + id
-	}))
+	}
+
+	m.AddOperatingStage(zitilib_5_operation.ModelMetricsWithIdMapper(runPhase.GetCloser(), idMapper))
+	m.AddOperatingStage(zitilib_5_operation.CircuitMetrics(time.Second, idMapper, runPhase.GetCloser()))
 	m.AddOperatingStage(clientMetrics)
 
 	for _, host := range m.SelectHosts("*") {
