@@ -18,29 +18,35 @@ func (self *stageFactory) Build(m *model.Model) error {
 	// m.MetricsHandlers = append(m.MetricsHandlers, model.StdOutMetricsWriter{})
 
 	runPhase := fablib_5_operation.NewPhase()
-	cleanupPhase := fablib_5_operation.NewPhase()
+	//cleanupPhase := fablib_5_operation.NewPhase()
 
-	clientMetrics := zitilib_5_operation.NewClientMetrics("metrics", runPhase.GetCloser())
+	clientMetrics := zitilib_5_operation.NewClientMetricsWithIdMapper("metrics", runPhase.GetCloser(), func(s string) string {
+		return "component#" + s
+	})
+
 	m.AddActivationStage(clientMetrics)
 
-	m.AddOperatingActions("syncModelEdgeState")
+	m.AddOperatingActions("stopSdkApps", "syncModelEdgeState")
 	m.AddOperatingStage(fablib_5_operation.InfluxMetricsReporter())
 	//m.AddOperatingStage(zitilib_5_operation.Mesh(runPhase.GetCloser()))
-	idMapper := func(id string) string {
+	m.AddOperatingStage(zitilib_5_operation.ModelMetricsWithIdMapper(runPhase.GetCloser(), func(id string) string {
 		if id == "ctrl" {
 			return "#ctrl"
 		}
 		id = strings.ReplaceAll(id, ".", ":")
 		return "component.edgeId:" + id
-	}
+	}))
 
-	m.AddOperatingStage(zitilib_5_operation.ModelMetricsWithIdMapper(runPhase.GetCloser(), idMapper))
-	m.AddOperatingStage(zitilib_5_operation.CircuitMetrics(time.Second, idMapper, runPhase.GetCloser()))
+	m.AddOperatingStage(zitilib_5_operation.CircuitMetrics(5*time.Second, runPhase.GetCloser(), func(id string) string {
+		id = strings.ReplaceAll(id, ".", ":")
+		return "component.edgeId:" + id
+	}))
+
 	m.AddOperatingStage(clientMetrics)
 
-	for _, host := range m.SelectHosts("*") {
-		m.AddOperatingStage(fablib_5_operation.StreamSarMetrics(host, 5, 3, runPhase, cleanupPhase))
-	}
+	//for _, host := range m.SelectHosts("*") {
+	//	m.AddOperatingStage(fablib_5_operation.StreamSarMetrics(host, 5, 3, runPhase, cleanupPhase))
+	//}
 
 	if err := self.listeners(m); err != nil {
 		return fmt.Errorf("error creating listeners (%w)", err)
@@ -68,7 +74,8 @@ func (_ *stageFactory) listeners(m *model.Model) error {
 	c := components[0]
 
 	remoteConfigFile := fmt.Sprintf("/home/%v/fablab/cfg/%v.json", m.MustVariable("credentials.ssh.username"), c.PublicIdentity)
-	stage := zitilib_5_operation.Loop3Listener(c.GetHost(), nil, "tcp:0.0.0.0:8171", "--config-file", remoteConfigFile)
+	stage := zitilib_5_operation.Loop3Listener(c.GetHost(), nil, "tcp:0.0.0.0:8171",
+		"--config-file", remoteConfigFile, "--health-check-addr 127.0.0.1:8172")
 	m.AddOperatingStage(stage)
 
 	return nil

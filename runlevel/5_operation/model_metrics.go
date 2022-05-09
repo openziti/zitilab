@@ -48,13 +48,15 @@ type modelMetrics struct {
 }
 
 func (self *modelMetrics) Operate(run model.Run) error {
+	self.m = run.GetModel()
+
 	bindHandler := channel.BindHandlerF(func(binding channel.Binding) error {
 		binding.AddTypedReceiveHandler(self)
 		return nil
 	})
 
 	var err error
-	self.ch, err = api.NewWsMgmtChannel(channel.BindHandlerF(bindHandler))
+	self.ch, err = api.NewWsMgmtChannel(bindHandler)
 	if err != nil {
 		return err
 	}
@@ -73,7 +75,6 @@ func (self *modelMetrics) Operate(run model.Run) error {
 		logrus.Fatalf("error queuing metrics request (%v)", err)
 	}
 
-	self.m = run.GetModel()
 	go self.runMetrics()
 
 	return nil
@@ -97,7 +98,7 @@ func (self *modelMetrics) HandleReceive(msg *channel.Message, _ channel.Channel)
 		self.m.AcceptHostMetrics(host, modelEvent)
 		logrus.Infof("<$= [%s]", response.SourceId)
 	} else {
-		logrus.Errorf("unable to find host (%v)", err)
+		logrus.Errorf("modelMetrics: unable to find host (%v)", err)
 	}
 }
 

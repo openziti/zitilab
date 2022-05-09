@@ -1,8 +1,6 @@
 module github.com/openziti/zitilab
 
-go 1.17
-
-replace github.com/openziti/fablab => ../fablab
+go 1.18
 
 require (
 	github.com/Jeffail/gabs v1.4.0
@@ -10,7 +8,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel v0.18.27
-	github.com/openziti/fablab v0.4.0
+	github.com/openziti/fablab v0.4.1-0.20220415171956-c0569f940924
 	github.com/openziti/fabric v0.17.102
 	github.com/openziti/foundation v0.17.22
 	github.com/openziti/sdk-golang v0.16.50

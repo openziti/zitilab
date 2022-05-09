@@ -796,6 +796,8 @@ github.com/openziti/dilithium v0.3.3/go.mod h1:vsCjI2AU/hon9e+dLhUFbCNGesJDj2ASg
 github.com/openziti/edge v0.21.169/go.mod h1:5iymsfUc7vMuBih80e2GDfy3sUMUM0oojJKHDzGMVmM=
 github.com/openziti/edge v0.21.188 h1:Cd35JxKo8ScZ2YUzFkd99MgD+OTIO+fQPlQrqT/zkwk=
 github.com/openziti/edge v0.21.188/go.mod h1:1GVzv8+nAN1hesdZWJxdhM6kVWCw+yvy4bUKCvLkdnM=
+github.com/openziti/fablab v0.4.1-0.20220415171956-c0569f940924 h1:IciEzxfyERVHwrkuT8VDx51B95MsteKHQon4tLXn+AQ=
+github.com/openziti/fablab v0.4.1-0.20220415171956-c0569f940924/go.mod h1:+rSkCFFhEV0UuYgY4W1xTHCVzzN/LVgTEPMSTX1wgFM=
 github.com/openziti/fabric v0.17.88/go.mod h1:+5lGx6Pv9XeBa2AxT3s3skjbbL6gwvbbTuQAqOCnOAY=
 github.com/openziti/fabric v0.17.102 h1:oXlmQvCvt3MY/SnUp8GcuGqL7bIWCCkgEN1grF0j+D0=
 github.com/openziti/fabric v0.17.102/go.mod h1:rIY7oVE5ea5mnmbP326v3lgQxJoVQsecwWcm5CSvN1k=

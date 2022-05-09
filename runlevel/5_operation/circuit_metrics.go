@@ -13,17 +13,19 @@ import (
 	"time"
 )
 
-func CircuitMetrics(pollFreq time.Duration, f func(string) string, closer <-chan struct{}) model.OperatingStage {
+func CircuitMetrics(pollFreq time.Duration, closer <-chan struct{}, f func(string) string) model.OperatingStage {
 	return &circuitMetrics{
-		closer:   closer,
-		circuits: map[string]struct{}{},
-		eventC:   make(chan func(), 10),
+		closer:             closer,
+		circuits:           map[string]struct{}{},
+		eventC:             make(chan func(), 10),
+		pollFreq:           pollFreq,
+		idToSelectorMapper: f,
 	}
 }
 
 type circuitMetrics struct {
 	ch                 channel.Channel
-	m                  *model.Model
+	model              *model.Model
 	eventC             chan func()
 	closer             <-chan struct{}
 	circuits           map[string]struct{}
@@ -32,6 +34,7 @@ type circuitMetrics struct {
 }
 
 func (self *circuitMetrics) Operate(run model.Run) error {
+	self.model = run.GetModel()
 	bindHandler := func(binding channel.Binding) error {
 		binding.AddReceiveHandler(int32(mgmt_pb.ContentType_StreamCircuitsEventType), channel.ReceiveHandlerF(self.receiveCircuitEvents))
 		binding.AddReceiveHandler(int32(mgmt_pb.ContentType_InspectResponseType), channel.ReceiveHandlerF(self.receiveCircuitInspectResults))
@@ -45,7 +48,11 @@ func (self *circuitMetrics) Operate(run model.Run) error {
 	self.ch = ch
 
 	requestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_StreamCircuitsRequestType), nil)
-	return requestMsg.WithTimeout(5 * time.Second).SendAndWaitForWire(ch)
+	if err = requestMsg.WithTimeout(5 * time.Second).SendAndWaitForWire(ch); err != nil {
+		return err
+	}
+	go self.runMetrics()
+	return nil
 }
 
 func (self *circuitMetrics) receiveCircuitEvents(msg *channel.Message, _ channel.Channel) {
@@ -104,6 +111,7 @@ func (self *circuitMetrics) runMetrics() {
 		select {
 		case <-self.closer:
 			_ = self.ch.Close()
+			return
 		case event := <-self.eventC:
 			event()
 		case <-ticker.C:
@@ -125,6 +133,7 @@ func (self *circuitMetrics) requestCircuitMetrics() {
 }
 
 func (self *circuitMetrics) ingestCircuitMetrics(sourceId string, circuitDetail *api.Gabs2Wrapper) {
+	log := pfxlog.Logger()
 	circuitId := circuitDetail.String("circuitId")
 	xgDetails := circuitDetail.Path("xgressDetails")
 	if xgDetails == nil {
@@ -141,25 +150,25 @@ func (self *circuitMetrics) ingestCircuitMetrics(sourceId string, circuitDetail 
 			},
 		}
 
-		if sendBufferDetail := xg.Path("recvBufferDetail"); sendBufferDetail != nil {
+		if sendBufferDetail := xg.Path("sendBufferDetail"); sendBufferDetail != nil {
 			for k, val := range sendBufferDetail.ChildrenMap() {
-				modelEvent.Metrics["sendBuffer."+k] = val.Data()
+				modelEvent.Metrics["circuit.sendBuffer."+k] = val.Data()
 			}
 		}
 
 		if recvBufferDetail := xg.Path("recvBufferDetail"); recvBufferDetail != nil {
 			for k, val := range recvBufferDetail.ChildrenMap() {
-				modelEvent.Metrics["recvBuffer."+k] = val.Data()
+				modelEvent.Metrics["circuit.recvBuffer."+k] = val.Data()
 			}
 		}
 
 		hostSelector := self.idToSelectorMapper(sourceId)
-		host, err := self.m.SelectHost(hostSelector)
+		host, err := self.model.SelectHost(hostSelector)
 		if err == nil {
-			self.m.AcceptHostMetrics(host, modelEvent)
-			logrus.Infof("<$= [%s/%v]", sourceId, circuitId)
+			self.model.AcceptHostMetrics(host, modelEvent)
+			log.Infof("<$= [%s/%v]", sourceId, circuitId)
 		} else {
-			logrus.WithError(err).Error("unable to find host")
+			log.WithError(err).Error("circuitMetrics: unable to find host")
 		}
 	}
 }

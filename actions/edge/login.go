@@ -3,6 +3,7 @@ package edge
 import (
 	"errors"
 	"github.com/openziti/fablab/kernel/model"
+	"github.com/openziti/ziti/ziti/cmd/ziti/cmd/common"
 	"github.com/openziti/zitilab/cli"
 	"path/filepath"
 )
@@ -34,6 +35,7 @@ func (l *login) Execute(m *model.Model) error {
 	}
 
 	_, err = cli.Exec(m, "edge", "login", edgeApiBaseUrl, "-i", model.ActiveInstanceId(), "-c", caChain, "-u", username, "-p", password)
+	common.CliIdentity = model.ActiveInstanceId()
 	return err
 }
 

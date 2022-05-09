@@ -17,9 +17,11 @@ workloads:
     # 128 MB/s = 1 Gb/s
 
     dialer:
-      txRequests: 1000000
+      txRequests: 10000000
       txPacing: 0
       txMaxJitter: 0
+      txPauseEvery: 0m
+      txPauseFor: 30s
       rxTimeout: 240000
       payloadMinBytes: 60000
       payloadMaxBytes: 60000
@@ -27,9 +29,11 @@ workloads:
 
     listener:
       txRequests: 0
-      txPacing: 20
+      txPacing: 0
       txMaxJitter: 0
-      rxPacing: 1ms
+      rxPacing: 0ms
+      rxPauseEvery: 0s
+      rxPauseFor: 10s
       rxTimeout: 240000
       payloadMinBytes: 10240
       payloadMaxBytes: 10240

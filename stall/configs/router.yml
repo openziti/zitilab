@@ -5,6 +5,8 @@
   
 v: 3
 
+enableDebugOps: true
+
 identity:
   cert:                 /home/{{$ssh_username}}/fablab/pki/intermediate/certs/{{$identity}}-client.cert
   server_cert:          /home/{{$ssh_username}}/fablab/pki/intermediate/certs/{{$identity}}-server.cert

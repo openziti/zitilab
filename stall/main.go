@@ -121,10 +121,10 @@ var m = &model.Model{
 							PublicIdentity: "router-west-{{ .Host.ScaleIndex }}",
 							RunWithSudo:    true,
 						},
-						"loop.listener-{{ .Host.ScaleIndex }}": {
+						"loop-listener-{{ .Host.ScaleIndex }}": {
 							Scope:          model.Scope{Tags: model.Tags{"sdk-app", "service"}},
 							BinaryName:     "ziti-fabric-test",
-							PublicIdentity: "test-host-{{ .Host.ScaleIndex }}",
+							PublicIdentity: "loop-listener-{{ .Host.ScaleIndex }}",
 						},
 					},
 				},
@@ -151,7 +151,7 @@ var m = &model.Model{
 							BinaryName:     "ziti-fabric-test",
 							ConfigSrc:      "test.loop3.yml",
 							ConfigName:     "test.loop3.yml",
-							PublicIdentity: "test-client-{{ .Host.ScaleIndex }}",
+							PublicIdentity: "loop-client-{{ .Host.ScaleIndex }}",
 						},
 					},
 				},
@@ -163,6 +163,7 @@ var m = &model.Model{
 		"bootstrap":          NewBootstrapAction(),
 		"start":              NewStartAction(),
 		"stop":               model.Bind(component.StopInParallel("*", 15)),
+		"stopSdkApps":        model.Bind(component.StopInParallel(".sdk-app", 15)),
 		"syncModelEdgeState": NewSyncModelEdgeStateAction(),
 		"clean": model.Bind(actions.Workflow(
 			component.StopInParallel("*", 15),
@@ -189,7 +190,7 @@ var m = &model.Model{
 	Distribution: model.DistributionStages{
 		distribution.DistributeSshKey("*"),
 		distribution.Locations("*", "logs"),
-		rsync.Rsync(25),
+		rsync.RsyncStaged(),
 	},
 
 	Disposal: model.DisposalStages{

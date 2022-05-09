@@ -73,14 +73,14 @@ func (metrics *ClientMetrics) Activate(run model.Run) error {
 }
 
 func (metrics *ClientMetrics) Operate(run model.Run) error {
+	metrics.model = run.GetModel()
+
 	identityConfigPath := run.GetLabel().GetFilePath("metrics-host.json")
 
 	sdkConfig, err := config.NewFromFile(identityConfigPath)
 	if err != nil {
 		return err
 	}
-
-	metrics.model = run.GetModel()
 
 	context := ziti.NewContextWithConfig(sdkConfig)
 	listener, err := context.Listen(metrics.service)
@@ -136,7 +136,7 @@ func (metrics *ClientMetrics) HandleMetricsConn(conn net.Conn) {
 		event := &mgmt_pb.StreamMetricsEvent{}
 		err := proto.Unmarshal(msgBuf[:msgLen], event)
 		if err != nil {
-			logrus.WithError(err).Error("error handling metrics receive, exiting")
+			log.WithError(err).Error("error handling metrics receive, exiting")
 			return
 		}
 
@@ -145,9 +145,9 @@ func (metrics *ClientMetrics) HandleMetricsConn(conn net.Conn) {
 		if err == nil {
 			modelEvent := metrics.toClientMetricsEvent(event)
 			metrics.model.AcceptHostMetrics(host, modelEvent)
-			logrus.Infof("<$= [%s]", event.SourceId)
+			log.Infof("<$= [%s]", event.SourceId)
 		} else {
-			logrus.Errorf("unable to find host (%v)", err)
+			log.WithError(err).Error("clientMetrics: unable to find host")
 		}
 	}
 }
