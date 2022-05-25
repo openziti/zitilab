@@ -34,10 +34,6 @@ func ZitiDistRoot() string {
 	return zitiDistRoot
 }
 
-func zitiBinaries() string {
-	return filepath.Join(zitiRoot, "bin")
-}
-
 func ZitiDistBinaries() string {
 	return filepath.Join(ZitiDistRoot(), "bin")
 }
