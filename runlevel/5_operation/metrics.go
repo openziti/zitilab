@@ -18,16 +18,17 @@ package zitilib_runlevel_5_operation
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/golang/protobuf/proto"
 	"github.com/openziti/channel"
 	"github.com/openziti/fablab/kernel/lib/timeutil"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fabric/pb/mgmt_pb"
 	"github.com/openziti/foundation/identity/dotziti"
-	"github.com/openziti/transport"
+	"github.com/openziti/transport/v2"
 	"github.com/sirupsen/logrus"
-	"strings"
-	"time"
 )
 
 func Metrics(closer <-chan struct{}) model.OperatingStage {
