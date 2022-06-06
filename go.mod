@@ -8,7 +8,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel v0.18.39
-	github.com/openziti/fablab v0.4.1-0.20220415171956-c0569f940924
+	github.com/openziti/fablab v0.4.1-0.20220419170315-88151ef2a55f
 	github.com/openziti/fabric v0.18.0
 	github.com/openziti/foundation v0.17.27
 	github.com/openziti/sdk-golang v0.16.76
@@ -30,10 +30,12 @@ require (
 	github.com/alecthomas/chroma v0.9.2 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20211106181442-e4c1a74c66bd // indirect
+	github.com/armon/go-metrics v0.3.10 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/aws/aws-sdk-go v1.34.28 // indirect
 	github.com/biogo/store v0.0.0-20200525035639-8c94ae1e7c9c // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
+	github.com/boltdb/bolt v1.3.1 // indirect
 	github.com/c-bata/go-prompt v0.2.6 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
@@ -62,6 +64,7 @@ require (
 	github.com/go-openapi/strfmt v0.21.2 // indirect
 	github.com/go-openapi/swag v0.21.1 // indirect
 	github.com/go-openapi/validate v0.21.0 // indirect
+	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
@@ -70,7 +73,13 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/hashicorp/go-hclog v1.2.0 // indirect
+	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
+	github.com/hashicorp/go-msgpack v0.5.5 // indirect
+	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/hashicorp/raft v1.3.9 // indirect
+	github.com/hashicorp/raft-boltdb v0.0.0-20220329195025-15018e9b97e0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/influxdata/influxdb1-client v0.0.0-20191209144304-8bf82d3c094d // indirect
 	github.com/jedib0t/go-pretty/v6 v6.3.1 // indirect
@@ -106,8 +115,10 @@ require (
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/openziti/edge v0.21.238 // indirect
 	github.com/openziti/storage v0.1.7 // indirect
+	github.com/openziti/x509-claims v1.0.2 // indirect
+	github.com/openziti/xweb v1.0.0 // indirect
 	github.com/openziti/ziti-db-explorer v1.1.1 // indirect
-	github.com/orcaman/concurrent-map v0.0.0-20210106121528-16402b402231 // indirect
+	github.com/orcaman/concurrent-map/v2 v2.0.0 // indirect
 	github.com/parallaxsecond/parsec-client-go v0.0.0-20220111122524-cb78842db373 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/sftp v1.13.4 // indirect
@@ -118,7 +129,6 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rodaine/table v1.0.1 // indirect
 	github.com/russross/blackfriday v1.5.2 // indirect
-	github.com/shirou/gopsutil v2.21.11+incompatible // indirect
 	github.com/shirou/gopsutil/v3 v3.22.4 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
 	github.com/speps/go-hashids v2.0.0+incompatible // indirect
