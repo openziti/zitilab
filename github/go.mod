@@ -3,7 +3,7 @@ module github.com/openziti/zitilab/github
 go 1.18
 
 require (
-	github.com/openziti/fablab v0.4.1-0.20220419170315-88151ef2a55f
+	github.com/openziti/fablab v0.4.1-0.20220606211259-c09a179eb0aa
 	github.com/openziti/zitilab v0.0.0-20220606195939-0aaa8a6279ce
 )
 
