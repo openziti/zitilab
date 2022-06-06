@@ -593,8 +593,8 @@ github.com/openziti/channel v0.18.39 h1:6VNSs4awqem2s0MXe1P/PlmwyOUqSIVhQqsnS1ot
 github.com/openziti/channel v0.18.39/go.mod h1:fO3m1xHXFM1dqtcR3IienQjiNJV4i5kzdqr0eWSncJE=
 github.com/openziti/edge v0.21.238 h1:pKvJ7Ed99m/GXQ3r4l+ZKc7yvrwWvfpktYNiZS8DNak=
 github.com/openziti/edge v0.21.238/go.mod h1:8eKEcODI05597ZRVjxrlbrx8Y7UOsQbBgq7nNWxJHaA=
-github.com/openziti/fablab v0.4.1-0.20220415171956-c0569f940924 h1:IciEzxfyERVHwrkuT8VDx51B95MsteKHQon4tLXn+AQ=
-github.com/openziti/fablab v0.4.1-0.20220415171956-c0569f940924/go.mod h1:+rSkCFFhEV0UuYgY4W1xTHCVzzN/LVgTEPMSTX1wgFM=
+github.com/openziti/fablab v0.4.1-0.20220419170315-88151ef2a55f h1:bMHAKQ/ScVRfJ3JzUx3LGtz0nrHi1SeyNsuBoIFvFKg=
+github.com/openziti/fablab v0.4.1-0.20220419170315-88151ef2a55f/go.mod h1:+rSkCFFhEV0UuYgY4W1xTHCVzzN/LVgTEPMSTX1wgFM=
 github.com/openziti/fabric v0.18.0 h1:xTM0T3RKuxaXi0D8XEDIDvD71XTzGLydqwyuxwJ6Ayc=
 github.com/openziti/fabric v0.18.0/go.mod h1:eSpht8sQjKnvL2skVdrIbEZD1QCfmuCZFbaaT+NG0QM=
 github.com/openziti/foundation v0.17.27 h1:RKvHQHNIxfME0LnxB+LF14HS19V+wE3NvSse0G5fnAE=
@@ -934,8 +934,9 @@ golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a/go.mod h1:RxMgew5VJxzue5/jJ
 golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20201207232520-09787c993a3a/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
-golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
+golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f h1:Ax0t5p6N38Ga0dThY21weqDEyz2oklo4IvDkpigvkD8=
+golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sys v0.0.0-20180606202747-9527bec2660b/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180622082034-63fc586f45fe/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180816055513-1c9583448a9c/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
