@@ -61,7 +61,7 @@ func (bootstrap *bootstrapWithFallbacks) Bootstrap(m *model.Model) (retErr error
 type BootstrapFromEnv struct{}
 
 func (bootstrap *BootstrapFromEnv) Bootstrap(m *model.Model) error {
-	logrus.Debugf("Bootstraping from Env")
+	logrus.Infof("Bootstraping from Env")
 	zitiRoot = os.Getenv("ZITI_ROOT")
 	if zitiRoot == "" {
 		if zitiPath, err := exec.LookPath("ziti"); err == nil {
@@ -112,7 +112,7 @@ func BootstrapFromDir(sourcePath, destPath string) *bootstrapFromDir {
 }
 
 func (b *bootstrapFromDir) Bootstrap(m *model.Model) error {
-	logrus.Debugf("Bootstraping from Dir")
+	logrus.Infof("Bootstraping from Dir")
 	zitiRoot = b.sourcePath
 	if _, err := os.Stat(zitiRoot); err != nil {
 		return fmt.Errorf("non-existent 'ZITI_ROOT', given %s", zitiRoot)
@@ -135,7 +135,7 @@ func (b *bootstrapFromDir) Bootstrap(m *model.Model) error {
 type BootstrapFromFind struct{}
 
 func (bootstrap *BootstrapFromFind) Bootstrap(m *model.Model) error {
-	logrus.Debugf("Bootstraping from Find")
+	logrus.Infof("Bootstraping from Find")
 	if zitiPath, err := exec.LookPath("ziti"); err == nil {
 		zitiRoot = path.Dir(path.Dir(zitiPath))
 	} else {
