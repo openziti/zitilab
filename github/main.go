@@ -75,7 +75,7 @@ var m = &model.Model{
 			Site:   "us-east-1a",
 			Hosts: model.Hosts{
 				"ctrl": {
-					InstanceType: "c5.large",
+					InstanceType: "t2.micro",
 					Components: model.Components{
 						"ctrl": {
 							Scope:          model.Scope{Tags: model.Tags{"ctrl"}},
@@ -92,7 +92,7 @@ var m = &model.Model{
 					},
 				},
 				"metrics-router": {
-					InstanceType: "c5.large",
+					InstanceType: "t2.micro",
 					Components: model.Components{
 						"metrics-router": {
 							Scope:          model.Scope{Tags: model.Tags{"edge-router", "no-traversal"}},
@@ -111,7 +111,7 @@ var m = &model.Model{
 			Hosts: model.Hosts{
 				"router-west-{{ .ScaleIndex }}": {
 					Scope:        model.Scope{Tags: model.Tags{"scaled"}},
-					InstanceType: "c5.large",
+					InstanceType: "t2.micro",
 					Components: model.Components{
 						"router-west-{{ .Host.ScaleIndex }}": {
 							Scope:          model.Scope{Tags: model.Tags{"edge-router", "tunneler", "terminator"}},
@@ -179,8 +179,9 @@ func main() {
 
 	model.AddBootstrapExtension(
 		zitilab.BootstrapWithFallbacks(
-			zitilab.BootstrapFromDir("/Users/cam/bin/linux/amd64", "/Users/cam/bin/linux/amd64"),
+			//zitilab.BootstrapFromDir("/Users/cam/bin/linux/amd64", "/Users/cam/bin/linux/amd64"),
 			//&zitilab.BootstrapFromFind{},
+			&zitilab.BootstrapFromEnv{},
 		))
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)
 	model.AddBootstrapExtension(aws_ssh_key.KeyManager)
