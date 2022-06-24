@@ -42,7 +42,5 @@ func Exec(m *model.Model, args ...string) (string, error) {
 		logrus.Errorf("err executing command, err:[%e]", err)
 	}
 
-	//out := fmt.Sprintf("out:[%s], err:[%s]", strings.Trim(cliOut.String(), " \t\r\n"), strings.Trim(cliErr.String(), " \t\r\n"))
-	//logrus.Info(out)
 	return cliOut.String(), nil
 }
