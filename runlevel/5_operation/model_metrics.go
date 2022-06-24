@@ -19,16 +19,15 @@ package zitilib_runlevel_5_operation
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
+	"github.com/openziti/channel"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/foundation/channel2"
-	"github.com/openziti/foundation/identity/dotziti"
-	"github.com/openziti/foundation/transport"
+	"github.com/openziti/ziti/ziti/cmd/ziti/cmd/api"
 	"github.com/sirupsen/logrus"
 	"time"
 )
 
-func ModelMetrics(closer chan struct{}) model.OperatingStage {
+func ModelMetrics(closer <-chan struct{}) model.OperatingStage {
 	return MetricsWithIdMapper(closer, func(id string) string {
 		return "#" + id
 	})
@@ -42,29 +41,25 @@ func ModelMetricsWithIdMapper(closer <-chan struct{}, f func(string) string) mod
 }
 
 type modelMetrics struct {
-	ch                 channel2.Channel
+	ch                 channel.Channel
 	m                  *model.Model
 	closer             <-chan struct{}
 	idToSelectorMapper func(string) string
 }
 
-func (metrics *modelMetrics) Operate(run model.Run) error {
-	if endpoint, id, err := dotziti.LoadIdentity(model.ActiveInstanceId()); err == nil {
-		if address, err := transport.ParseAddress(endpoint); err == nil {
-			dialer := channel2.NewClassicDialer(id, address, nil)
-			if ch, err := channel2.NewChannel("metrics", dialer, nil); err == nil {
-				metrics.ch = ch
-			} else {
-				return fmt.Errorf("error connecting metrics channel (%w)", err)
-			}
-		} else {
-			return fmt.Errorf("invalid endpoint address (%w)", err)
-		}
-	} else {
-		return fmt.Errorf("unable to load 'fablab' identity (%w)", err)
-	}
+func (self *modelMetrics) Operate(run model.Run) error {
+	self.m = run.GetModel()
 
-	metrics.ch.AddReceiveHandler(metrics)
+	bindHandler := channel.BindHandlerF(func(binding channel.Binding) error {
+		binding.AddTypedReceiveHandler(self)
+		return nil
+	})
+
+	var err error
+	self.ch, err = api.NewWsMgmtChannel(bindHandler)
+	if err != nil {
+		return err
+	}
 
 	request := &mgmt_pb.StreamMetricsRequest{
 		Matchers: []*mgmt_pb.StreamMetricsRequest_MetricMatcher{},
@@ -74,52 +69,52 @@ func (metrics *modelMetrics) Operate(run model.Run) error {
 		return fmt.Errorf("error marshaling metrics request (%w)", err)
 	}
 
-	requestMsg := channel2.NewMessage(int32(mgmt_pb.ContentType_StreamMetricsRequestType), body)
-	err = metrics.ch.SendWithTimeout(requestMsg, 5*time.Second)
+	requestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_StreamMetricsRequestType), body)
+	err = requestMsg.WithTimeout(5 * time.Second).SendAndWaitForWire(self.ch)
 	if err != nil {
 		logrus.Fatalf("error queuing metrics request (%v)", err)
 	}
 
-	metrics.m = run.GetModel()
-	go metrics.runMetrics()
+	go self.runMetrics()
 
 	return nil
 }
 
-func (metrics *modelMetrics) ContentType() int32 {
+func (self *modelMetrics) ContentType() int32 {
 	return int32(mgmt_pb.ContentType_StreamMetricsEventType)
 }
 
-func (metrics *modelMetrics) HandleReceive(msg *channel2.Message, _ channel2.Channel) {
+func (self *modelMetrics) HandleReceive(msg *channel.Message, _ channel.Channel) {
 	response := &mgmt_pb.StreamMetricsEvent{}
 	err := proto.Unmarshal(msg.Body, response)
 	if err != nil {
 		logrus.Error("error handling metrics receive (%w)", err)
 	}
 
-	hostSelector := metrics.idToSelectorMapper(response.SourceId)
-	host, err := metrics.m.SelectHost(hostSelector)
+	hostSelector := self.idToSelectorMapper(response.SourceId)
+	host, err := self.m.SelectHost(hostSelector)
 	if err == nil {
-		modelEvent := metrics.toModelMetricsEvent(response)
-		metrics.m.AcceptHostMetrics(host, modelEvent)
+		modelEvent := self.toModelMetricsEvent(response)
+		self.m.AcceptHostMetrics(host, modelEvent)
 		logrus.Infof("<$= [%s]", response.SourceId)
 	} else {
-		logrus.Errorf("unable to find host (%v)", err)
+		logrus.Errorf("modelMetrics: unable to find host (%v)", err)
 	}
 }
 
-func (metrics *modelMetrics) runMetrics() {
+func (self *modelMetrics) runMetrics() {
 	logrus.Infof("starting")
 	defer logrus.Infof("exiting")
 
-	<-metrics.closer
-	_ = metrics.ch.Close()
+	<-self.closer
+	_ = self.ch.Close()
 }
 
-func (metrics *modelMetrics) toModelMetricsEvent(fabricEvent *mgmt_pb.StreamMetricsEvent) *model.MetricsEvent {
+func (self *modelMetrics) toModelMetricsEvent(fabricEvent *mgmt_pb.StreamMetricsEvent) *model.MetricsEvent {
 	modelEvent := &model.MetricsEvent{
 		Timestamp: time.Unix(fabricEvent.Timestamp.Seconds, int64(fabricEvent.Timestamp.Nanos)),
 		Metrics:   model.MetricSet{},
+		Tags:      fabricEvent.Tags,
 	}
 
 	for name, val := range fabricEvent.IntMetrics {

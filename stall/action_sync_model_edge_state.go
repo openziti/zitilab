@@ -1,5 +1,5 @@
 /*
-	Copyright 2019 NetFoundry, Inc.
+	Copyright 2020 NetFoundry, Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
 	limitations under the License.
 */
 
-package zitilib_actions
+package main
 
 import (
+	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/zitilab/cli"
+	"github.com/openziti/zitilab/actions/edge"
+	"github.com/openziti/zitilab/models"
 )
 
-func Fabric(args ...string) model.Action {
-	return &fabric{
-		args: args,
-	}
+func NewSyncModelEdgeStateAction() model.ActionBinder {
+	action := &syncModelEdgeStateAction{}
+	return action.bind
 }
 
-func (a *fabric) Execute(m *model.Model) error {
-	_, err := cli.Exec(m, append([]string{"fabric", "-i", model.ActiveInstanceId()}, a.args...)...)
-	return err
+func (a *syncModelEdgeStateAction) bind(*model.Model) model.Action {
+	workflow := actions.Workflow()
+	workflow.AddAction(edge.Login("#ctrl"))
+	workflow.AddAction(edge.SyncModelEdgeState(models.EdgeRouterTag))
+	return workflow
 }
 
-type fabric struct {
-	args []string
-}
+type syncModelEdgeStateAction struct{}

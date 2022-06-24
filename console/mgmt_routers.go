@@ -18,8 +18,8 @@ package console
 
 import (
 	"github.com/golang/protobuf/proto"
+	"github.com/openziti/channel"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/foundation/channel2"
 	"github.com/sirupsen/logrus"
 )
 
@@ -31,7 +31,7 @@ func (mgmtRouters *mgmtRouters) ContentType() int32 {
 	return int32(mgmt_pb.ContentType_ListRoutersResponseType)
 }
 
-func (mgmtRouters *mgmtRouters) HandleReceive(msg *channel2.Message, ch channel2.Channel) {
+func (mgmtRouters *mgmtRouters) HandleReceive(msg *channel.Message, ch channel.Channel) {
 	response := &mgmt_pb.ListRoutersResponse{}
 	err := proto.Unmarshal(msg.Body, response)
 	if err != nil {

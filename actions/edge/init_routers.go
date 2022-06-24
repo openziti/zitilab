@@ -5,7 +5,7 @@ import (
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/zitilab/cli"
+	zitilib_actions "github.com/openziti/zitilab/actions"
 	"path/filepath"
 	"strings"
 )
@@ -19,7 +19,7 @@ func InitEdgeRouters(componentSpec string, concurrency int) model.Action {
 
 func (action *initEdgeRoutersAction) Execute(m *model.Model) error {
 	return m.ForEachComponent(action.componentSpec, action.concurrency, func(c *model.Component) error {
-		if _, err := cli.Exec(m, "edge", "delete", "edge-router", c.PublicIdentity); err != nil {
+		if err := zitilib_actions.EdgeExec(m, "delete", "edge-router", c.PublicIdentity); err != nil {
 			return err
 		}
 
@@ -32,12 +32,27 @@ func (action *initEdgeRoutersAction) createAndEnrollRouter(c *model.Component) e
 
 	jwtFileName := filepath.Join(model.ConfigBuild(), c.PublicIdentity+".jwt")
 
-	_, err := cli.Exec(c.GetModel(), "edge", "create", "edge-router", c.PublicIdentity, "-j",
-		"--jwt-output-file", jwtFileName,
-		"-a", strings.Join(c.Tags, ","))
+	attributes := strings.Join(c.Tags, ",")
 
-	if err != nil {
+	args := []string{"create", "edge-router", c.PublicIdentity, "-j", "--jwt-output-file", jwtFileName, "-a", attributes}
+
+	isTunneler := c.HasLocalOrAncestralTag("tunneler")
+	if isTunneler {
+		args = append(args, "--tunneler-enabled")
+	}
+
+	if c.HasLocalOrAncestralTag("no-traversal") {
+		args = append(args, "--no-traversal")
+	}
+
+	if err := zitilib_actions.EdgeExec(c.GetModel(), args...); err != nil {
 		return err
+	}
+
+	if isTunneler {
+		if err := zitilib_actions.EdgeExec(c.GetModel(), "update", "identity", c.PublicIdentity, "-a", attributes); err != nil {
+			return err
+		}
 	}
 
 	remoteJwt := "/home/ubuntu/fablab/cfg/" + c.PublicIdentity + ".jwt"
@@ -46,9 +61,18 @@ func (action *initEdgeRoutersAction) createAndEnrollRouter(c *model.Component) e
 	}
 
 	tmpl := "set -o pipefail; /home/ubuntu/fablab/bin/%s enroll /home/ubuntu/fablab/cfg/%s -j %s 2>&1 | tee /home/ubuntu/logs/%s.router.enroll.log "
-	return host.Exec(c.GetHost(),
+	cmds := []string{
 		"mkdir -p /home/ubuntu/logs",
-		fmt.Sprintf(tmpl, c.BinaryName, c.ConfigName, remoteJwt, c.ConfigName)).Execute(c.GetModel())
+		fmt.Sprintf(tmpl, c.BinaryName, c.ConfigName, remoteJwt, c.ConfigName),
+	}
+
+	if isTunneler {
+		cmds = append(cmds,
+			"sudo sed -i 's/#DNS=/DNS=127.0.0.1/g' /etc/systemd/resolved.conf",
+			"sudo systemctl restart systemd-resolved")
+	}
+
+	return host.Exec(c.GetHost(), cmds...).Execute(c.GetModel())
 }
 
 type initEdgeRoutersAction struct {

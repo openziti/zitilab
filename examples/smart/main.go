@@ -18,6 +18,7 @@ package main
 
 import (
 	"embed"
+
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/binding"
 	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/aws_ssh_key"
@@ -170,7 +171,11 @@ var smartrouting = &model.Model{
 func main() {
 	//smartrouting.VarConfig.EnableDebugLogger()
 
-	model.AddBootstrapExtension(&zitilab.Bootstrap{})
+	model.AddBootstrapExtension(
+		zitilab.BootstrapWithFallbacks(
+			&zitilab.BootstrapFromEnv{},
+			&zitilab.BootstrapFromFind{},
+		))
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)
 	model.AddBootstrapExtension(aws_ssh_key.KeyManager)
 

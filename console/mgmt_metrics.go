@@ -19,8 +19,8 @@ package console
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
+	"github.com/openziti/channel"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/foundation/channel2"
 	"github.com/sirupsen/logrus"
 	"strings"
 )
@@ -33,7 +33,7 @@ func (mgmt *mgmtMetrics) ContentType() int32 {
 	return int32(mgmt_pb.ContentType_StreamMetricsEventType)
 }
 
-func (mgmt *mgmtMetrics) HandleReceive(msg *channel2.Message, ch channel2.Channel) {
+func (mgmt *mgmtMetrics) HandleReceive(msg *channel.Message, ch channel.Channel) {
 	response := &mgmt_pb.StreamMetricsEvent{}
 	err := proto.Unmarshal(msg.Body, response)
 	if err != nil {

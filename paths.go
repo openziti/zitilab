@@ -17,9 +17,10 @@
 package zitilab
 
 import (
+	"path/filepath"
+
 	"github.com/openziti/fablab/kernel/lib/runlevel/2_kitting/devkit"
 	"github.com/openziti/fablab/kernel/model"
-	"path/filepath"
 )
 
 func ZitiRoot() string {
@@ -33,32 +34,19 @@ func ZitiDistRoot() string {
 	return zitiDistRoot
 }
 
-func zitiBinaries() string {
-	return filepath.Join(zitiRoot, "bin")
-}
-
 func ZitiDistBinaries() string {
 	return filepath.Join(ZitiDistRoot(), "bin")
-}
-
-func ZitiCli() string {
-	return filepath.Join(zitiBinaries(), "ziti")
-}
-
-func ZitiFabricCli() string {
-	return filepath.Join(zitiBinaries(), "ziti-fabric")
 }
 
 func DefaultZitiBinaries() model.ConfigurationStage {
 	zitiBinaries := []string{
 		"ziti",
 		"ziti-controller",
-		"ziti-fabric",
 		"ziti-fabric-test",
 		"ziti-router",
 	}
 
-	return devkit.DevKit(ZitiDistBinaries(), zitiBinaries)
+	return devkit.DevKitF(ZitiDistBinaries, zitiBinaries)
 }
 
 var zitiRoot string

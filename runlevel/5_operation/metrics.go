@@ -18,16 +18,17 @@ package zitilib_runlevel_5_operation
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/golang/protobuf/proto"
+	"github.com/openziti/channel"
 	"github.com/openziti/fablab/kernel/lib/timeutil"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/foundation/channel2"
 	"github.com/openziti/foundation/identity/dotziti"
-	"github.com/openziti/foundation/transport"
+	"github.com/openziti/transport/v2"
 	"github.com/sirupsen/logrus"
-	"strings"
-	"time"
 )
 
 func Metrics(closer <-chan struct{}) model.OperatingStage {
@@ -44,10 +45,14 @@ func MetricsWithIdMapper(closer <-chan struct{}, f func(string) string) model.Op
 }
 
 func (metrics *metrics) Operate(run model.Run) error {
+	bindHandler := channel.BindHandlerF(func(binding channel.Binding) error {
+		binding.AddTypedReceiveHandler(metrics)
+		return nil
+	})
 	if endpoint, id, err := dotziti.LoadIdentity(model.ActiveInstanceId()); err == nil {
 		if address, err := transport.ParseAddress(endpoint); err == nil {
-			dialer := channel2.NewClassicDialer(id, address, nil)
-			if ch, err := channel2.NewChannel("metrics", dialer, nil); err == nil {
+			dialer := channel.NewClassicDialer(id, address, nil)
+			if ch, err := channel.NewChannel("metrics", dialer, bindHandler, nil); err == nil {
 				metrics.ch = ch
 			} else {
 				return fmt.Errorf("error connecting metrics channel (%w)", err)
@@ -59,8 +64,6 @@ func (metrics *metrics) Operate(run model.Run) error {
 		return fmt.Errorf("unable to load 'fablab' identity (%w)", err)
 	}
 
-	metrics.ch.AddReceiveHandler(metrics)
-
 	request := &mgmt_pb.StreamMetricsRequest{
 		Matchers: []*mgmt_pb.StreamMetricsRequest_MetricMatcher{},
 	}
@@ -69,8 +72,8 @@ func (metrics *metrics) Operate(run model.Run) error {
 		return fmt.Errorf("error marshaling metrics request (%w)", err)
 	}
 
-	requestMsg := channel2.NewMessage(int32(mgmt_pb.ContentType_StreamMetricsRequestType), body)
-	err = metrics.ch.SendWithTimeout(requestMsg, 5*time.Second)
+	requestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_StreamMetricsRequestType), body)
+	err = requestMsg.WithTimeout(5 * time.Second).SendAndWaitForWire(metrics.ch)
 	if err != nil {
 		logrus.Fatalf("error queuing metrics request (%v)", err)
 	}
@@ -85,7 +88,7 @@ func (metrics *metrics) ContentType() int32 {
 	return int32(mgmt_pb.ContentType_StreamMetricsEventType)
 }
 
-func (metrics *metrics) HandleReceive(msg *channel2.Message, _ channel2.Channel) {
+func (metrics *metrics) HandleReceive(msg *channel.Message, _ channel.Channel) {
 	response := &mgmt_pb.StreamMetricsEvent{}
 	err := proto.Unmarshal(msg.Body, response)
 	if err != nil {
@@ -119,17 +122,12 @@ func (metrics *metrics) runMetrics() {
 	logrus.Infof("starting")
 	defer logrus.Infof("exiting")
 
-	for {
-		select {
-		case <-metrics.closer:
-			_ = metrics.ch.Close()
-			return
-		}
-	}
+	<-metrics.closer
+	_ = metrics.ch.Close()
 }
 
 type metrics struct {
-	ch                 channel2.Channel
+	ch                 channel.Channel
 	m                  *model.Model
 	closer             <-chan struct{}
 	idToSelectorMapper func(string) string

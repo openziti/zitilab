@@ -23,15 +23,23 @@ import (
 
 func Edge(args ...string) model.Action {
 	return &edge{
-		args: append([]string{"edge"}, args...),
+		args: args,
 	}
 }
 
 func (a *edge) Execute(m *model.Model) error {
-	_, err := cli.Exec(m, a.args...)
-	return err
+	return EdgeExec(m, a.args...)
 }
 
 type edge struct {
 	args []string
+}
+
+func EdgeExec(m *model.Model, args ...string) error {
+	_, err := EdgeExecWithOutput(m, args...)
+	return err
+}
+
+func EdgeExecWithOutput(m *model.Model, args ...string) (string, error) {
+	return cli.Exec(m, append([]string{"edge", "-i", model.ActiveInstanceId()}, args...)...)
 }

@@ -19,12 +19,12 @@ package cli
 import (
 	"bytes"
 	"errors"
-	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/zitilab"
-	"github.com/sirupsen/logrus"
-	"os/exec"
+	"os"
 	"strings"
+
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/openziti/ziti/ziti/cmd/ziti/cmd"
+	"github.com/sirupsen/logrus"
 )
 
 func Exec(m *model.Model, args ...string) (string, error) {
@@ -32,19 +32,15 @@ func Exec(m *model.Model, args ...string) (string, error) {
 		return "", errors.New("model not bound")
 	}
 
-	allArgs := append(args)
-	cli := exec.Command(zitilab.ZitiCli(), allArgs...)
-	logrus.Infof("executing: %s", zitilab.ZitiCli())
 	var cliOut bytes.Buffer
-	cli.Stdout = &cliOut
 	var cliErr bytes.Buffer
-	cli.Stderr = &cliErr
-	logrus.Infof("%v", cli.Args)
-	err := cli.Run()
-	out := fmt.Sprintf("out:[%s], err:[%s]", strings.Trim(cliOut.String(), " \t\r\n"), strings.Trim(cliErr.String(), " \t\r\n"))
-	logrus.Info(out)
-	if err != nil {
-		return "", err
+
+	ziticli := cmd.NewRootCommand(os.Stdin, &cliOut, &cliErr)
+	ziticli.SetArgs(args)
+	logrus.Infof("executing: %s", strings.Join(args, " "))
+	if err := ziticli.Execute(); err != nil {
+		logrus.Errorf("err executing command, err:[%e]", err)
 	}
+
 	return cliOut.String(), nil
 }
