@@ -7,19 +7,19 @@ require (
 	github.com/Jeffail/gabs/v2 v2.6.1
 	github.com/golang/protobuf v1.5.2
 	github.com/michaelquigley/pfxlog v0.6.9
-	github.com/openziti/channel v0.18.39
+	github.com/openziti/channel v0.18.40
 	github.com/openziti/fablab v0.4.1-0.20220419170315-88151ef2a55f
-	github.com/openziti/fabric v0.18.0
-	github.com/openziti/foundation v0.17.27
-	github.com/openziti/sdk-golang v0.16.76
-	github.com/openziti/transport/v2 v2.0.4
-	github.com/openziti/ziti v0.0.0-20220606192326-3810adc523fc
+	github.com/openziti/fabric v0.18.5
+	github.com/openziti/foundation v0.17.28
+	github.com/openziti/sdk-golang v0.16.77
+	github.com/openziti/transport/v2 v2.0.5
+	github.com/openziti/ziti v0.25.12
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v2 v2.4.0
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -63,7 +63,7 @@ require (
 	github.com/go-openapi/spec v0.20.6 // indirect
 	github.com/go-openapi/strfmt v0.21.2 // indirect
 	github.com/go-openapi/swag v0.21.1 // indirect
-	github.com/go-openapi/validate v0.21.0 // indirect
+	github.com/go-openapi/validate v0.22.0 // indirect
 	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
@@ -73,7 +73,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
-	github.com/hashicorp/go-hclog v1.2.0 // indirect
+	github.com/hashicorp/go-hclog v1.2.1 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-msgpack v0.5.5 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
@@ -113,10 +113,12 @@ require (
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/oliveagle/jsonpath v0.0.0-20180606110733-2e52cf6e6852 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
-	github.com/openziti/edge v0.21.238 // indirect
-	github.com/openziti/storage v0.1.7 // indirect
+	github.com/openziti/edge v0.21.250 // indirect
+	github.com/openziti/jwks v1.0.1 // indirect
+	github.com/openziti/storage v0.1.8 // indirect
 	github.com/openziti/x509-claims v1.0.2 // indirect
 	github.com/openziti/xweb v1.0.0 // indirect
+	github.com/openziti/xweb/v2 v2.0.0 // indirect
 	github.com/openziti/ziti-db-explorer v1.1.1 // indirect
 	github.com/orcaman/concurrent-map/v2 v2.0.0 // indirect
 	github.com/parallaxsecond/parsec-client-go v0.0.0-20220111122524-cb78842db373 // indirect
@@ -129,7 +131,7 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rodaine/table v1.0.1 // indirect
 	github.com/russross/blackfriday v1.5.2 // indirect
-	github.com/shirou/gopsutil/v3 v3.22.4 // indirect
+	github.com/shirou/gopsutil/v3 v3.22.5 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
 	github.com/speps/go-hashids v2.0.0+incompatible // indirect
 	github.com/spf13/afero v1.6.0 // indirect
@@ -138,7 +140,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.10.0 // indirect
-	github.com/stretchr/testify v1.7.1 // indirect
+	github.com/stretchr/testify v1.7.2 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/teris-io/shortid v0.0.0-20201117134242-e59966efd125 // indirect
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
@@ -156,7 +158,7 @@ require (
 	golang.org/x/image v0.0.0-20191206065243-da761ea9ff43 // indirect
 	golang.org/x/mod v0.5.1 // indirect
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/sys v0.0.0-20220608164250-635b8c9b7f68 // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.7 // indirect
