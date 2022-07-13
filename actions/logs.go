@@ -18,12 +18,13 @@ package zitilib_actions
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/lib"
-	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/foundation/util/info"
-	"github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
+
+	"github.com/openziti/fablab/kernel/lib"
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/sirupsen/logrus"
 )
 
 func Logs() model.Action {

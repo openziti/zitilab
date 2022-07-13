@@ -7,13 +7,15 @@ require (
 	github.com/Jeffail/gabs/v2 v2.6.1
 	github.com/golang/protobuf v1.5.2
 	github.com/michaelquigley/pfxlog v0.6.9
-	github.com/openziti/channel v0.18.40
+	github.com/openziti/channel v0.18.49
 	github.com/openziti/fablab v0.4.1-0.20220419170315-88151ef2a55f
-	github.com/openziti/fabric v0.18.5
-	github.com/openziti/foundation v0.17.28
-	github.com/openziti/sdk-golang v0.16.77
+	github.com/openziti/fabric v0.19.13
+	github.com/openziti/foundation/v2 v2.0.1
+	github.com/openziti/sdk-golang v0.16.93
 	github.com/openziti/transport/v2 v2.0.5
-	github.com/openziti/ziti v0.25.12
+	github.com/openziti/edge v0.22.12
+	github.com/openziti/identity v1.0.2
+	github.com/openziti/ziti v0.25.13
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4

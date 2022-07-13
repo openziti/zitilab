@@ -25,7 +25,7 @@ import (
 	"github.com/openziti/channel"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/foundation/identity/dotziti"
+	"github.com/openziti/identity/dotziti"
 	"github.com/openziti/transport/v2"
 	"github.com/sirupsen/logrus"
 )
