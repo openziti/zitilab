@@ -28,7 +28,7 @@ func (mbs *metricbeatStart) Execute(m *model.Model) error {
 	return m.ForEachHost(mbs.hostSpec, 24, func(c *model.Host) error {
 		ssh := lib.NewSshConfigFactory(c)
 
-		cmd := fmt.Sprintf("nohup metricbeat --path.config %s --path.data %s --path.logs %s 2>&1 &", mbs.configPath, mbs.dataPath, mbs.logPath)
+		cmd := fmt.Sprintf("screen -d -m nohup metricbeat --path.config %s --path.data %s --path.logs %s 2>&1 &", mbs.configPath, mbs.dataPath, mbs.logPath)
 
 		if output, err := lib.RemoteExec(ssh, cmd); err != nil {
 			logrus.Errorf("error starting metricbeat service [%s] (%v)", output, err)
