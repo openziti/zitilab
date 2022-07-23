@@ -28,7 +28,7 @@ func (cs *consulStart) Execute(m *model.Model) error {
 	return m.ForEachHost(cs.hostSpec, 24, func(c *model.Host) error {
 		ssh := lib.NewSshConfigFactory(c)
 
-		cmd := fmt.Sprintf("nohup consul agent -join %s -config-dir %s -data-dir %s 2>&1 &", cs.consulServer, cs.configDir, cs.dataPath)
+		cmd := fmt.Sprintf("screen -d -m nohup consul agent -join %s -config-dir %s -data-dir %s 2>&1 &", cs.consulServer, cs.configDir, cs.dataPath)
 
 		if output, err := lib.RemoteExec(ssh, cmd); err != nil {
 			logrus.Errorf("error starting consul service [%s] (%v)", output, err)
