@@ -8,6 +8,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const RECCOMENDED_METRICBEAT_VERSION = "8.3.2"
+
 type installMetricbeat struct {
 	hostSpec string
 	version  string
