@@ -8,13 +8,17 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const RECCOMENDED_METRICBEAT_VERSION = "8.3.2"
+
 type installMetricbeat struct {
 	hostSpec string
+	version  string
 }
 
-func InstallMetricbeat(hostSpec string) model.InfrastructureStage {
+func InstallMetricbeat(hostSpec, version string) model.InfrastructureStage {
 	return &installMetricbeat{
 		hostSpec: hostSpec,
+		version:  version,
 	}
 }
 
@@ -30,7 +34,12 @@ func (imb *installMetricbeat) Express(run model.Run) error {
 			return fmt.Errorf("error adding elastic repo to apt on host [%s] %s (%s)", host.PublicIp, output, err)
 		}
 
-		cmd := "sudo apt-get update && sudo apt-get install metricbeat -y"
+		cmd := fmt.Sprintf("sudo apt-get update && sudo apt-get install metricbeat%s -y", func() string {
+			if imb.version != "" {
+				return fmt.Sprintf("=%s", imb.version)
+			}
+			return ""
+		}())
 
 		if output, err := lib.RemoteExec(ssh, cmd); err != nil {
 			return fmt.Errorf("error installing metricbeat on host [%s] %s (%s)", host.PublicIp, output, err)
