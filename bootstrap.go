@@ -1,5 +1,5 @@
 /*
-	Copyright 2019 NetFoundry, Inc.
+	Copyright 2019 NetFoundry Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ func (bootstrap *bootstrapWithFallbacks) Bootstrap(m *model.Model) (retErr error
 	var err error
 	defer func() {
 		if retErr == nil && err != nil {
-			logrus.Infof("Bootstrapp succeeded, but had to use a fallback: %w", err)
+			logrus.WithError(err).Info("Bootstrap succeeded, but had to use a fallback")
 		}
 	}()
 	for _, f := range bootstrap.fns {
