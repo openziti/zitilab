@@ -5,14 +5,13 @@ go 1.19
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Jeffail/gabs/v2 v2.6.1
-	github.com/golang/protobuf v1.5.2
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.4
 	github.com/openziti/fablab v0.4.1
 	github.com/openziti/fabric v0.21.2
 	github.com/openziti/foundation/v2 v2.0.5
 	github.com/openziti/identity v1.0.16
-	github.com/openziti/sdk-golang v0.16.127
+	github.com/openziti/sdk-golang v0.16.128
 	github.com/openziti/transport/v2 v2.0.33
 	github.com/openziti/ziti v0.0.0-20221008195510-1614ba2defc0
 	github.com/pkg/errors v0.9.1
@@ -68,6 +67,7 @@ require (
 	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20191123064959-2c17d62f5098 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
