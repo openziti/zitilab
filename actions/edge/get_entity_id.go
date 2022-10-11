@@ -11,11 +11,15 @@ import (
 func GetEntityId(m *model.Model, entityType string, name string) (string, error) {
 	output, err := cli.Exec(m, "edge", "list", entityType, "--output-json",
 		fmt.Sprintf(`name="%v" limit none`, name))
+	if err != nil {
+		return "", err
+	}
 
 	l, err := gabs.ParseJSON([]byte(output))
 	if err != nil {
 		return "", err
 	}
+
 	data := l.Path("data")
 	if data == nil {
 		return "", nil

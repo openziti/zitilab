@@ -24,7 +24,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -110,7 +109,7 @@ func mergeLocalIdentities() error {
 			identities = make(map[interface{}]interface{})
 		}
 	} else {
-		data, err := ioutil.ReadFile(idPath)
+		data, err := os.ReadFile(idPath)
 		if err != nil {
 			return fmt.Errorf("unable to read existing identities [%s] (%s)", idPath, err)
 		}
@@ -123,7 +122,7 @@ func mergeLocalIdentities() error {
 
 	var localIdentities map[interface{}]interface{}
 	localIdPath := filepath.Join(model.PkiBuild(), "local_identities.yml")
-	data, err := ioutil.ReadFile(localIdPath)
+	data, err := os.ReadFile(localIdPath)
 	if err != nil {
 		return fmt.Errorf("error reading local identities [%s] (%s)", localIdPath, err)
 	}
@@ -140,8 +139,10 @@ func mergeLocalIdentities() error {
 
 	identities[model.ActiveInstanceId()] = fablabIdentity
 	data, err = yaml.Marshal(identities)
-
-	if err := ioutil.WriteFile(idPath, data, os.ModePerm); err != nil {
+	if err != nil {
+		return errors.Wrap(err, "error marshalling identities to yaml")
+	}
+	if err := os.WriteFile(idPath, data, os.ModePerm); err != nil {
 		return fmt.Errorf("error writing user identities [%s] (%s)", idPath, err)
 	}
 

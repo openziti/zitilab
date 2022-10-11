@@ -18,11 +18,11 @@ package zitilib_runlevel_5_operation
 
 import (
 	"fmt"
+	"google.golang.org/protobuf/proto"
 	"strings"
 	"time"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/openziti/channel"
+	"github.com/openziti/channel/v2"
 	"github.com/openziti/fablab/kernel/lib/timeutil"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fabric/pb/mgmt_pb"

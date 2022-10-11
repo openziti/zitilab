@@ -21,11 +21,15 @@ func (action *syncModelEdgeStateAction) Execute(m *model.Model) error {
 	}
 
 	output, err := zitilib_actions.EdgeExecWithOutput(m, "list", "edge-routers", "--output-json", "true limit none")
+	if err != nil {
+		return err
+	}
 
 	l, err := gabs.ParseJSON([]byte(output))
 	if err != nil {
 		return err
 	}
+
 	data := l.Path("data")
 	if data == nil {
 		return nil

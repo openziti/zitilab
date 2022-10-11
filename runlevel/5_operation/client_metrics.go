@@ -18,7 +18,6 @@ package zitilib_runlevel_5_operation
 
 import (
 	"encoding/binary"
-	"github.com/golang/protobuf/proto"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fabric/pb/mgmt_pb"
@@ -27,6 +26,7 @@ import (
 	zitilib_actions "github.com/openziti/zitilab/actions"
 	"github.com/openziti/zitilab/cli"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/proto"
 	"io"
 	"net"
 	"time"

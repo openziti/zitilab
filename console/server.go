@@ -1,5 +1,5 @@
 /*
-	Copyright 2019 NetFoundry, Inc.
+	Copyright 2019 NetFoundry Inc.
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -56,9 +56,6 @@ func (server *Server) sendAll(msg *Message) {
 		c.Write(msg)
 	}
 }
-func (server *Server) err(err error) {
-	server.errCh <- err
-}
 
 func (server *Server) Listen() {
 	logrus.Infof("listening")
@@ -95,17 +92,6 @@ func (server *Server) Listen() {
 			return
 		}
 	}
-}
-
-func (server *Server) sendAllNetwork() {
-	msg := &Message{}
-	for id := range server.routers {
-		msg.Routers = append(msg.Routers, id)
-	}
-	for _, link := range server.links {
-		msg.Links = append(msg.Links, link)
-	}
-	server.sendAll(msg)
 }
 
 func (server *Server) sendNetwork(c *Client) {
