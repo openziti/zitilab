@@ -6,7 +6,7 @@ require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Jeffail/gabs/v2 v2.6.1
 	github.com/michaelquigley/pfxlog v0.6.9
-	github.com/openziti/channel/v2 v2.0.4
+	github.com/openziti/channel/v2 v2.0.5
 	github.com/openziti/fablab v0.4.7
 	github.com/openziti/fabric v0.21.2
 	github.com/openziti/foundation/v2 v2.0.5

@@ -602,8 +602,8 @@ github.com/opentracing/opentracing-go v1.2.0/go.mod h1:GxEUsuufX4nBwe+T+Wl9TAgYr
 github.com/openzipkin/zipkin-go v0.1.6/go.mod h1:QgAqvLzwWbR/WpD4A3cGpPtJrZXNIiJc5AZX7/PBEpw=
 github.com/openziti/agent v1.0.3 h1:FtVIl5vu+xk0uwlXTqWnGHp7RqSFAzuBa1YuCPZkTsk=
 github.com/openziti/agent v1.0.3/go.mod h1:k9gQv82hTTxdVSfMmD0LyWzCEy+9fWh2ISsg1llgRqU=
-github.com/openziti/channel/v2 v2.0.4 h1:vP0X1r7AJh9JQez3PHJdYXrIe5IIw3AvSiMWXTsKF+Q=
-github.com/openziti/channel/v2 v2.0.4/go.mod h1:3nRmUqm1teERvCfMzcxcKjj8+/68gR8/nPiTr0Y7IW0=
+github.com/openziti/channel/v2 v2.0.5 h1:/it82bDT/9oS9XnATcKbgVE9Rf9hoYmbUcYOy03HZ44=
+github.com/openziti/channel/v2 v2.0.5/go.mod h1:Qe2cSAhuMhtX3ABQp4kiYYWPCAScp828SPljlrkKW8Y=
 github.com/openziti/edge v0.24.3-0.20221010205651-63c161224a58 h1:TW1reuFtq/b+ogPg6kgZALzHM+t1MWBlI2nOkawZsD0=
 github.com/openziti/edge v0.24.3-0.20221010205651-63c161224a58/go.mod h1:PokVH7eOoXenJhbam77Dqb4hdwwo0m79QOnqY6OiCI0=
 github.com/openziti/fablab v0.4.7 h1:922uJM16ryYaUKzzcb2EWLunoK7xdZ5B/kZ3p/HGmFg=
