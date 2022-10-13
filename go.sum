@@ -616,10 +616,10 @@ github.com/openziti/identity v1.0.18 h1:e57J8oudjoU6XNKgmxFjBeePNwxDBE6n0l3FdxDv
 github.com/openziti/identity v1.0.18/go.mod h1:OVeskbGOZx7r7/nJ2qTZXCbE+lFSChGv7WFofN6TJWc=
 github.com/openziti/jwks v1.0.2 h1:32BGXIAnefS+v7uXKPb1x8/cQ7srek6Ai06dsrMTY4E=
 github.com/openziti/jwks v1.0.2/go.mod h1:KwO0x9FBG0aoJS5f6nH5xeHoplyR1H143SMI9kF0mC8=
-github.com/openziti/metrics v1.1.2 h1:PENxryysU6j7H0NplGD6Q0tQJ4ulHs2Zemr0hQur1E0=
-github.com/openziti/metrics v1.1.2/go.mod h1:vMO63hmXpI0p1iiA4WBuFuQPCfmhwAcv84iWeyrXcfs=
-github.com/openziti/sdk-golang v0.16.129 h1:qjP4tnsBRPKyH4mJuwYUB3rb4K7/thKEpaOYZwztU2A=
-github.com/openziti/sdk-golang v0.16.129/go.mod h1:jOaQbUy/j32LHqjKT+hmCxnfxOMkcVE7ZlzadE6zc3A=
+github.com/openziti/metrics v1.1.4 h1:UGLU1kBJ3ztDO1SAs42qecN/BV4/JTPGH93LWvZwa4c=
+github.com/openziti/metrics v1.1.4/go.mod h1:Wy7suQpju6oqWc1cmKA6+0Bh3izbudDGdfSqCuJ63UU=
+github.com/openziti/sdk-golang v0.16.135 h1:9/pxkHGZJYUsdM03/rQksOz2S3i9C/sSUIHwmEbrxXk=
+github.com/openziti/sdk-golang v0.16.135/go.mod h1:o4brIi4dvez9mM+IPtKuUN97RiGAwcY3D9zFm6SIMOI=
 github.com/openziti/storage v0.1.23 h1:6a9xbDcofjjwgkW5ABpQNVb0G0fJtDi4nPKB5DnbPc8=
 github.com/openziti/storage v0.1.23/go.mod h1:MuCS3ZQK2MVy57ge06w0s+BQst+PFAXttnC2+8zYz/g=
 github.com/openziti/transport/v2 v2.0.36 h1:yttgXbFnj4adypuYFErb0TCOLR+v87j0se7iFw+rmIk=
