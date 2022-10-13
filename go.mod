@@ -11,7 +11,7 @@ require (
 	github.com/openziti/fabric v0.21.3
 	github.com/openziti/foundation/v2 v2.0.5
 	github.com/openziti/identity v1.0.16
-	github.com/openziti/sdk-golang v0.16.128
+	github.com/openziti/sdk-golang v0.16.129
 	github.com/openziti/transport/v2 v2.0.33
 	github.com/openziti/ziti v0.0.0-20221008195510-1614ba2defc0
 	github.com/pkg/errors v0.9.1
