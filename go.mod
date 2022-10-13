@@ -6,13 +6,13 @@ require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Jeffail/gabs/v2 v2.6.1
 	github.com/michaelquigley/pfxlog v0.6.9
-	github.com/openziti/channel/v2 v2.0.5
+	github.com/openziti/channel/v2 v2.0.9
 	github.com/openziti/fablab v0.4.7
 	github.com/openziti/fabric v0.21.3
-	github.com/openziti/foundation/v2 v2.0.5
-	github.com/openziti/identity v1.0.16
+	github.com/openziti/foundation/v2 v2.0.6
+	github.com/openziti/identity v1.0.18
 	github.com/openziti/sdk-golang v0.16.129
-	github.com/openziti/transport/v2 v2.0.33
+	github.com/openziti/transport/v2 v2.0.36
 	github.com/openziti/ziti v0.0.0-20221008195510-1614ba2defc0
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.0
