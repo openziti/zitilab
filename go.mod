@@ -8,7 +8,7 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.9
 	github.com/openziti/fablab v0.4.7
-	github.com/openziti/fabric v0.21.3
+	github.com/openziti/fabric v0.21.12
 	github.com/openziti/foundation/v2 v2.0.6
 	github.com/openziti/identity v1.0.18
 	github.com/openziti/sdk-golang v0.16.129
@@ -59,7 +59,7 @@ require (
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
 	github.com/go-openapi/loads v0.21.2 // indirect
-	github.com/go-openapi/runtime v0.24.1 // indirect
+	github.com/go-openapi/runtime v0.24.2 // indirect
 	github.com/go-openapi/spec v0.20.7 // indirect
 	github.com/go-openapi/strfmt v0.21.3 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
@@ -117,8 +117,8 @@ require (
 	github.com/openziti/agent v1.0.3 // indirect
 	github.com/openziti/edge v0.24.3-0.20221010205651-63c161224a58 // indirect
 	github.com/openziti/jwks v1.0.2 // indirect
-	github.com/openziti/metrics v1.1.2 // indirect
-	github.com/openziti/storage v0.1.23 // indirect
+	github.com/openziti/metrics v1.1.4 // indirect
+	github.com/openziti/storage v0.1.24 // indirect
 	github.com/openziti/x509-claims v1.0.3 // indirect
 	github.com/openziti/xweb/v2 v2.0.2 // indirect
 	github.com/openziti/ziti-db-explorer v1.1.1 // indirect
