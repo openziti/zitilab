@@ -9,10 +9,10 @@ require (
 	github.com/openziti/channel/v2 v2.0.9
 	github.com/openziti/fablab v0.4.7
 	github.com/openziti/fabric v0.21.3
-	github.com/openziti/foundation/v2 v2.0.6
-	github.com/openziti/identity v1.0.18
+	github.com/openziti/foundation/v2 v2.0.7
+	github.com/openziti/identity v1.0.20
 	github.com/openziti/sdk-golang v0.16.129
-	github.com/openziti/transport/v2 v2.0.36
+	github.com/openziti/transport/v2 v2.0.38
 	github.com/openziti/ziti v0.0.0-20221008195510-1614ba2defc0
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.0
@@ -50,7 +50,7 @@ require (
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/felixge/httpsnoop v1.0.1 // indirect
-	github.com/fsnotify/fsnotify v1.5.4 // indirect
+	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/fullsailor/pkcs7 v0.0.0-20190404230743-d7302db945fa // indirect
 	github.com/go-acme/lego/v4 v4.2.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -142,7 +142,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.10.0 // indirect
-	github.com/stretchr/testify v1.8.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/teris-io/shortid v0.0.0-20201117134242-e59966efd125 // indirect
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
