@@ -7,7 +7,7 @@ require (
 	github.com/Jeffail/gabs/v2 v2.6.1
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.9
-	github.com/openziti/fablab v0.4.7
+	github.com/openziti/fablab v0.4.11
 	github.com/openziti/fabric v0.21.3
 	github.com/openziti/foundation/v2 v2.0.6
 	github.com/openziti/identity v1.0.18
@@ -32,7 +32,7 @@ require (
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20211106181442-e4c1a74c66bd // indirect
 	github.com/armon/go-metrics v0.3.10 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
-	github.com/aws/aws-sdk-go v1.44.114 // indirect
+	github.com/aws/aws-sdk-go v1.44.118 // indirect
 	github.com/biogo/store v0.0.0-20200525035639-8c94ae1e7c9c // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/boltdb/bolt v1.3.1 // indirect
