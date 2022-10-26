@@ -7,9 +7,9 @@ require (
 	github.com/Jeffail/gabs/v2 v2.6.1
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.9
-	github.com/openziti/fablab v0.4.11
+	github.com/openziti/fablab v0.4.13
 	github.com/openziti/fabric v0.21.3
-	github.com/openziti/foundation/v2 v2.0.6
+	github.com/openziti/foundation/v2 v2.0.7
 	github.com/openziti/identity v1.0.18
 	github.com/openziti/sdk-golang v0.16.129
 	github.com/openziti/transport/v2 v2.0.36
@@ -138,11 +138,11 @@ require (
 	github.com/speps/go-hashids v2.0.0+incompatible // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
-	github.com/spf13/cobra v1.6.0 // indirect
+	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.10.0 // indirect
-	github.com/stretchr/testify v1.8.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/teris-io/shortid v0.0.0-20201117134242-e59966efd125 // indirect
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
