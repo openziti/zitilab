@@ -65,7 +65,7 @@ func (bootstrap *BootstrapFromEnv) Bootstrap(m *model.Model) error {
 	zitiRoot = os.Getenv("ZITI_ROOT")
 	if zitiRoot == "" {
 		if zitiPath, err := exec.LookPath("ziti"); err == nil {
-			zitiRoot = path.Dir(path.Dir(zitiPath))
+			zitiRoot = path.Dir(zitiPath)
 		} else {
 			return fmt.Errorf("ZITI_PATH not set and ziti executable not found in path. please set 'ZITI_ROOT'")
 		}
@@ -80,21 +80,6 @@ func (bootstrap *BootstrapFromEnv) Bootstrap(m *model.Model) error {
 	}
 
 	logrus.Debugf("ZITI_ROOT = [%s]", zitiRoot)
-
-	zitiDistRoot = os.Getenv("ZITI_DIST_ROOT")
-	if zitiDistRoot == "" {
-		zitiDistRoot = zitiRoot
-	} else {
-		if fi, err := os.Stat(zitiDistRoot); err == nil {
-			if !fi.IsDir() {
-				return fmt.Errorf("invalid 'ZITI_DIST_ROOT' (!directory)")
-			}
-		} else {
-			return fmt.Errorf("non-existent 'ZITI_DIST_BIN', given %s", zitiDistRoot)
-		}
-	}
-
-	logrus.Debugf("ZITI_DIST_ROOT = [%s]", zitiDistRoot)
 
 	return nil
 }
@@ -119,16 +104,6 @@ func (b *bootstrapFromDir) Bootstrap(m *model.Model) error {
 	}
 	logrus.Debugf("ZITI_ROOT = [%s]", zitiRoot)
 
-	zitiDistRoot = b.destPath
-	if fi, err := os.Stat(zitiDistRoot); err == nil {
-		if !fi.IsDir() {
-			return fmt.Errorf("invalid 'ZITI_DIST_ROOT' (!directory)")
-		}
-	} else {
-		return fmt.Errorf("non-existent 'ZITI_DIST_BIN', given %s", zitiDistRoot)
-	}
-
-	logrus.Debugf("ZITI_DIST_ROOT = [%s]", zitiDistRoot)
 	return nil
 }
 
@@ -151,17 +126,6 @@ func (bootstrap *BootstrapFromFind) Bootstrap(m *model.Model) error {
 	}
 
 	logrus.Debugf("ZITI_ROOT = [%s]", zitiRoot)
-
-	zitiDistRoot = zitiRoot
-	if fi, err := os.Stat(zitiDistRoot); err == nil {
-		if !fi.IsDir() {
-			return fmt.Errorf("invalid 'ZITI_DIST_ROOT' (!directory)")
-		}
-	} else {
-		return fmt.Errorf("non-existent 'ZITI_DIST_BIN', given %s", zitiDistRoot)
-	}
-
-	logrus.Debugf("ZITI_DIST_ROOT = [%s]", zitiDistRoot)
 
 	return nil
 }
