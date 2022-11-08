@@ -34,9 +34,16 @@ func (l *login) Execute(m *model.Model) error {
 		return errors.New("variable credentials/edge/password must be a string")
 	}
 
-	_, err = cli.Exec(m, "edge", "login", edgeApiBaseUrl, "-i", model.ActiveInstanceId(), "-c", caChain, "-u", username, "-p", password)
+	if _, err = cli.Exec(m, "edge", "login", edgeApiBaseUrl, "-i", model.ActiveInstanceId(), "-c", caChain, "-u", username, "-p", password); err != nil {
+		return err
+	}
+
+	if _, err = cli.Exec(m, "edge", "use", model.ActiveInstanceId()); err != nil {
+		return err
+	}
+
 	common.CliIdentity = model.ActiveInstanceId()
-	return err
+	return nil
 }
 
 type login struct {
