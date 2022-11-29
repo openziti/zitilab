@@ -7,7 +7,7 @@ require (
 	github.com/Jeffail/gabs/v2 v2.6.1
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.9
-	github.com/openziti/fablab v0.4.15
+	github.com/openziti/fablab v0.4.16
 	github.com/openziti/fabric v0.21.3
 	github.com/openziti/foundation/v2 v2.0.7
 	github.com/openziti/identity v1.0.18
@@ -82,7 +82,7 @@ require (
 	github.com/hashicorp/raft-boltdb v0.0.0-20220329195025-15018e9b97e0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/influxdata/influxdb1-client v0.0.0-20191209144304-8bf82d3c094d // indirect
-	github.com/jedib0t/go-pretty/v6 v6.4.2 // indirect
+	github.com/jedib0t/go-pretty/v6 v6.4.3 // indirect
 	github.com/jessevdk/go-flags v1.5.0 // indirect
 	github.com/jinzhu/copier v0.3.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
