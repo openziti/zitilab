@@ -3,7 +3,7 @@ package edge
 import (
 	"errors"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/ziti/cmd/ziti/cmd/common"
+	"github.com/openziti/ziti/ziti/cmd/common"
 	"github.com/openziti/zitilab/cli"
 	"path/filepath"
 )

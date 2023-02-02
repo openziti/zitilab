@@ -19,38 +19,77 @@ package zitilib_runlevel_1_configuration
 import (
 	"fmt"
 	"github.com/openziti/fablab/kernel/model"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"os"
 	"path"
+	"strings"
 )
 
-func Fabric() model.ConfigurationStage {
-	return &fabric{}
+func Fabric(trustDomain string, componentSpecs ...string) model.ConfigurationStage {
+	return &fabric{
+		trustDomain:    trustDomain,
+		componentSpecs: componentSpecs,
+	}
+}
+
+type fabric struct {
+	trustDomain    string
+	componentSpecs []string
+}
+
+func (f *fabric) getSpiffeId(c *model.Component, id string) string {
+	for _, tag := range c.Tags {
+		if strings.HasPrefix(tag, "spiffePathPrefix:") {
+			prefix := tag[:len("spifferPathPrefix:")]
+			return prefix + id
+		}
+	}
+	return id
 }
 
 func (f *fabric) Configure(run model.Run) error {
 	m := run.GetModel()
-	if err := generateCa(); err != nil {
+	if err := generateCa(f.trustDomain); err != nil {
 		return fmt.Errorf("error generating ca (%s)", err)
 	}
 
 	ips := map[string]string{}
 
-	for _, component := range m.SelectComponents("*") {
-		if component.PublicIdentity != "" {
-			logrus.Infof("generating public ip identity [%s/%s] on [%s/%s]", component.Id, component.PublicIdentity, component.Region().Id, component.Host.Id)
-			if err := generateCert(component.PublicIdentity, component.Host.PublicIp); err != nil {
-				return fmt.Errorf("error generating public identity [%s/%s]", component.Id, component.PublicIdentity)
+	processedComponents := map[*model.Component]struct{}{}
+
+	for _, spec := range f.componentSpecs {
+		for _, component := range m.SelectComponents(spec) {
+			if _, found := processedComponents[component]; found {
+				continue
 			}
-			ips[component.GetPathId()+".public"] = component.Host.PublicIp
-		}
-		if component.PrivateIdentity != "" {
-			logrus.Infof("generating private ip identity [%s/%s] on [%s/%s]", component.Id, component.PrivateIdentity, component.Region().Id, component.Host.Id)
-			if err := generateCert(component.PrivateIdentity, component.Host.PrivateIp); err != nil {
-				return fmt.Errorf("error generating private identity [%s/%s]", component.Id, component.PrivateIdentity)
+			processedComponents[component] = struct{}{}
+
+			if component.PublicIdentity != "" {
+				logrus.Infof("generating public ip identity [%s/%s] on [%s/%s]", component.Id, component.PublicIdentity, component.Region().Id, component.Host.Id)
+				if err := generateSigningCert(component.PublicIdentity); err != nil {
+					return errors.Wrapf(err, "error generating public identity [%s/%s]", component.Id, component.PublicIdentity)
+				}
+
+				if err := generateCert(component.PublicIdentity, component.Host.PublicIp, f.getSpiffeId(component, component.PublicIdentity)); err != nil {
+					return fmt.Errorf("error generating public identity [%s/%s]", component.Id, component.PublicIdentity)
+				}
+
+				ips[component.GetPathId()+".public"] = component.Host.PublicIp
 			}
-			ips[component.GetPathId()+".private"] = component.Host.PrivateIp
+
+			if component.PrivateIdentity != "" {
+				logrus.Infof("generating private ip identity [%s/%s] on [%s/%s]", component.Id, component.PrivateIdentity, component.Region().Id, component.Host.Id)
+				if err := generateSigningCert(component.PrivateIdentity); err != nil {
+					return errors.Wrapf(err, "error generating private identity [%s/%s]", component.Id, component.PublicIdentity)
+				}
+
+				if err := generateCert(component.PrivateIdentity, component.Host.PrivateIp, f.getSpiffeId(component, component.PrivateIdentity)); err != nil {
+					return fmt.Errorf("error generating private identity [%s/%s]", component.Id, component.PrivateIdentity)
+				}
+				ips[component.GetPathId()+".private"] = component.Host.PrivateIp
+			}
 		}
 	}
 
@@ -123,5 +162,12 @@ func hasExisitingPki() (bool, error) {
 	return true, nil
 }
 
-type fabric struct {
+func hasExistingCA(name string) (bool, error) {
+	if _, err := os.Stat(path.Join(model.PkiBuild(), name)); err != nil {
+		if os.IsNotExist(err) {
+			return false, nil
+		}
+		return true, err
+	}
+	return true, nil
 }

@@ -56,7 +56,7 @@ func (self *stageFactory) Build(m *model.Model) error {
 	// 3. loop tester configurations
 	// 4. The actual binaries, including the controller, router, ziti-fabric CLI and the ziti-fabric-test tool
 	m.Configuration = model.ConfigurationStages{
-		zitilab_runlevel_1_configuration.IfNoPki(zitilab_runlevel_1_configuration.Fabric(), zitilab_runlevel_1_configuration.DotZiti()),
+		zitilab_runlevel_1_configuration.IfNoPki(zitilab_runlevel_1_configuration.Fabric("smart.test")),
 		config.Component(),
 		config.Static([]config.StaticConfig{
 			{Src: "10-ambient.loop2.yml", Name: "10-ambient.loop2.yml"},
@@ -106,7 +106,7 @@ func (self *stageFactory) addOperationStages(m *model.Model) error {
 	phase := fablib_5_operation.NewPhase()
 
 	m.AddOperatingStage(zitilab_5_operation.Mesh(phase.GetCloser()))
-	m.AddOperatingStage(zitilab_5_operation.Metrics(phase.GetCloser()))
+	//m.AddOperatingStage(zitilab_5_operation.Metrics(phase.GetCloser()))
 
 	if err := self.addListenerStages(m); err != nil {
 		return fmt.Errorf("error creating listeners (%w)", err)
