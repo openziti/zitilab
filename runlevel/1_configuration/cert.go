@@ -22,26 +22,21 @@ import (
 	"strings"
 
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/ziti/cmd/ziti/cmd"
+	"github.com/openziti/ziti/ziti/cmd"
 	"github.com/sirupsen/logrus"
 )
 
-func generateCa() error {
+func generateCa(trustDomain string) error {
+	if caExists, err := hasExistingCA("root"); caExists || err != nil {
+		return err
+	}
+
 	var pkiOut bytes.Buffer
 	var pkiErr bytes.Buffer
 	ziticli := cmd.NewRootCommand(nil, &pkiOut, &pkiErr)
-
-	ziticli.SetArgs([]string{"pki", "create", "ca", "--pki-root", model.PkiBuild(), "--ca-name", "root", "--ca-file", "root"})
-	logrus.Infof("%v", ziticli.Args)
-	if err := ziticli.Execute(); err != nil {
-		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
-		return fmt.Errorf("error generating key (%s)", err)
-	}
-
-	pkiOut.Reset()
-	pkiErr.Reset()
-	ziticli.SetArgs([]string{"pki", "create", "intermediate", "--pki-root", model.PkiBuild(), "--ca-name", "root"})
-	logrus.Infof("%v", ziticli.Args)
+	args := []string{"pki", "create", "ca", "--pki-root", model.PkiBuild(), "--ca-name", "root", "--ca-file", "root", "--trust-domain", trustDomain, "--"}
+	ziticli.SetArgs(args)
+	logrus.Infof("%v", args)
 	if err := ziticli.Execute(); err != nil {
 		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
 		return fmt.Errorf("error generating key (%s)", err)
@@ -50,39 +45,47 @@ func generateCa() error {
 	return nil
 }
 
-func generateCert(name, ip string) error {
-	logrus.Infof("generating certificate [%s:%s]", name, ip)
-	logrus.Infof("generating certificate key")
+func generateSigningCert(name string) error {
+	logrus.Infof("generating signing certificate [%s]", name)
+
+	var pkiOut bytes.Buffer
+	var pkiErr bytes.Buffer
+
+	ziticli := cmd.NewRootCommand(nil, &pkiOut, &pkiErr)
+
+	args := []string{"pki", "create", "intermediate", "--pki-root", model.PkiBuild(), "--ca-name", "root",
+		"--intermediate-file", name, "--intermediate-name", name + " signing cert"}
+	ziticli.SetArgs(args)
+	logrus.Infof("%v", args)
+	if err := ziticli.Execute(); err != nil {
+		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
+		return fmt.Errorf("error generating key (%s)", err)
+	}
+	return nil
+}
+
+func generateCert(name, ip, spiffeId string) error {
+	logrus.Infof("generating server certificate [%s:%s]", name, ip)
 
 	var pkiOut bytes.Buffer
 	var pkiErr bytes.Buffer
 	ziticli := cmd.NewRootCommand(nil, &pkiOut, &pkiErr)
 
-	ziticli.SetArgs([]string{"pki", "create", "key", "--pki-root", model.PkiBuild(), "--ca-name", "intermediate", "--key-file", name})
-	logrus.Infof("%v", ziticli.Args)
-	if err := ziticli.Execute(); err != nil {
-		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
-		return fmt.Errorf("error generating key (%s)", err)
+	args := []string{"pki", "create", "server",
+		"--pki-root", model.PkiBuild(),
+		"--ca-name", name,
+		"--server-file", fmt.Sprintf("%s-server", name),
+		"--ip", ip}
+
+	if spiffeId != "" {
+		args = append(args, "--spiffe-id", spiffeId)
 	}
 
-	logrus.Infof("generating certificate server")
-	pkiOut.Reset()
-	pkiErr.Reset()
-	ziticli.SetArgs([]string{"pki", "create", "server", "--pki-root", model.PkiBuild(), "--ca-name", "intermediate", "--server-file", fmt.Sprintf("%s-server", name), "--ip", ip, "--key-file", name})
-	logrus.Infof("%v", ziticli.Args)
+	logrus.Infof("%v", args)
+	ziticli.SetArgs(args)
 	if err := ziticli.Execute(); err != nil {
 		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
 		return fmt.Errorf("error generating server certificate (%s)", err)
-	}
-
-	logrus.Infof("generating certificate client")
-	pkiOut.Reset()
-	pkiErr.Reset()
-	ziticli.SetArgs([]string{"pki", "create", "client", "--pki-root", model.PkiBuild(), "--ca-name", "intermediate", "--client-file", fmt.Sprintf("%s-client", name), "--key-file", name, "--client-name", name})
-	logrus.Infof("%v", ziticli.Args)
-	if err := ziticli.Execute(); err != nil {
-		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
-		return fmt.Errorf("error generating client certificate (%s)", err)
 	}
 
 	return nil

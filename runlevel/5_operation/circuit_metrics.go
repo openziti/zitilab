@@ -1,15 +1,16 @@
 package zitilib_runlevel_5_operation
 
 import (
+	"encoding/json"
 	"github.com/Jeffail/gabs/v2"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v2"
 	"github.com/openziti/channel/v2/protobufs"
 	"github.com/openziti/fablab/kernel/model"
+	"github.com/openziti/fabric/event"
 	"github.com/openziti/fabric/pb/mgmt_pb"
-	"github.com/openziti/ziti/ziti/cmd/ziti/cmd/api"
+	"github.com/openziti/ziti/ziti/cmd/api"
 	"github.com/sirupsen/logrus"
-	"google.golang.org/protobuf/proto"
 	"time"
 )
 
@@ -36,7 +37,7 @@ type circuitMetrics struct {
 func (self *circuitMetrics) Operate(run model.Run) error {
 	self.model = run.GetModel()
 	bindHandler := func(binding channel.Binding) error {
-		binding.AddReceiveHandler(int32(mgmt_pb.ContentType_StreamCircuitsEventType), channel.ReceiveHandlerF(self.receiveCircuitEvents))
+		binding.AddReceiveHandler(int32(mgmt_pb.ContentType_StreamEventsEventType), channel.ReceiveHandlerF(self.receiveCircuitEvents))
 		binding.AddReceiveHandler(int32(mgmt_pb.ContentType_InspectResponseType), channel.ReceiveHandlerF(self.receiveCircuitInspectResults))
 		return nil
 	}
@@ -47,7 +48,17 @@ func (self *circuitMetrics) Operate(run model.Run) error {
 	}
 	self.ch = ch
 
-	requestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_StreamCircuitsRequestType), nil)
+	streamEventsRequest := map[string]interface{}{
+		"format":        "json",
+		"subscriptions": []*event.Subscription{{Type: event.CircuitEventsNs}},
+	}
+
+	msgBytes, err := json.Marshal(streamEventsRequest)
+	if err != nil {
+		return err
+	}
+
+	requestMsg := channel.NewMessage(int32(mgmt_pb.ContentType_StreamEventsRequestType), msgBytes)
 	if err = requestMsg.WithTimeout(5 * time.Second).SendAndWaitForWire(ch); err != nil {
 		return err
 	}
@@ -57,24 +68,24 @@ func (self *circuitMetrics) Operate(run model.Run) error {
 
 func (self *circuitMetrics) receiveCircuitEvents(msg *channel.Message, _ channel.Channel) {
 	log := pfxlog.Logger()
-	event := &mgmt_pb.StreamCircuitsEvent{}
-	err := proto.Unmarshal(msg.Body, event)
+	circuitEvent := &event.CircuitEvent{}
+	err := json.Unmarshal(msg.Body, &circuitEvent)
 	if err != nil {
 		panic(err)
 	}
 
-	if event.EventType == mgmt_pb.StreamCircuitEventType_CircuitDeleted {
+	if circuitEvent.EventType == event.CircuitDeleted {
 		self.eventC <- func() {
-			delete(self.circuits, event.CircuitId)
-			log.Infof("circuit removed: %v", event.CircuitId)
+			delete(self.circuits, circuitEvent.CircuitId)
+			log.Infof("circuit removed: %v", circuitEvent.CircuitId)
 		}
-	} else if event.EventType == mgmt_pb.StreamCircuitEventType_CircuitCreated {
+	} else if circuitEvent.EventType == event.CircuitCreated {
 		self.eventC <- func() {
-			self.circuits[event.CircuitId] = struct{}{}
-			log.Infof("circuit added: %v, path: %v", event.CircuitId, event.Path.CalculateDisplayPath())
+			self.circuits[circuitEvent.CircuitId] = struct{}{}
+			log.Infof("circuit added: %v, path: %v", circuitEvent.CircuitId, circuitEvent.Path)
 		}
-	} else if event.EventType == mgmt_pb.StreamCircuitEventType_PathUpdated {
-		log.Infof("circuit updated: %v, path: %v", event.CircuitId, event.Path.CalculateDisplayPath())
+	} else if circuitEvent.EventType == event.CircuitUpdated {
+		log.Infof("circuit updated: %v, path: %v", circuitEvent.CircuitId, circuitEvent.Path)
 	}
 }
 
@@ -112,8 +123,8 @@ func (self *circuitMetrics) runMetrics() {
 		case <-self.closer:
 			_ = self.ch.Close()
 			return
-		case event := <-self.eventC:
-			event()
+		case evt := <-self.eventC:
+			evt()
 		case <-ticker.C:
 			self.requestCircuitMetrics()
 		}
