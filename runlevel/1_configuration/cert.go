@@ -34,8 +34,9 @@ func generateCa(trustDomain string) error {
 	var pkiOut bytes.Buffer
 	var pkiErr bytes.Buffer
 	ziticli := cmd.NewRootCommand(nil, &pkiOut, &pkiErr)
-	ziticli.SetArgs([]string{"pki", "create", "ca", "--pki-root", model.PkiBuild(), "--ca-name", "root", "--ca-file", "root", "--trust-domain", trustDomain, "--"})
-	logrus.Infof("%v", ziticli.Args)
+	args := []string{"pki", "create", "ca", "--pki-root", model.PkiBuild(), "--ca-name", "root", "--ca-file", "root", "--trust-domain", trustDomain, "--"}
+	ziticli.SetArgs(args)
+	logrus.Infof("%v", args)
 	if err := ziticli.Execute(); err != nil {
 		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
 		return fmt.Errorf("error generating key (%s)", err)
@@ -52,8 +53,10 @@ func generateSigningCert(name string) error {
 
 	ziticli := cmd.NewRootCommand(nil, &pkiOut, &pkiErr)
 
-	ziticli.SetArgs([]string{"pki", "create", "intermediate", "--pki-root", model.PkiBuild(), "--ca-name", "root"})
-	logrus.Infof("%v", ziticli.Args)
+	args := []string{"pki", "create", "intermediate", "--pki-root", model.PkiBuild(), "--ca-name", "root",
+		"--intermediate-file", name, "--intermediate-name", name + " signing cert"}
+	ziticli.SetArgs(args)
+	logrus.Infof("%v", args)
 	if err := ziticli.Execute(); err != nil {
 		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))
 		return fmt.Errorf("error generating key (%s)", err)
@@ -78,7 +81,7 @@ func generateCert(name, ip, spiffeId string) error {
 		args = append(args, "--spiffe-id", spiffeId)
 	}
 
-	logrus.Infof("%v", ziticli.Args)
+	logrus.Infof("%v", args)
 	ziticli.SetArgs(args)
 	if err := ziticli.Execute(); err != nil {
 		logrus.Errorf("stdOut [%s], stdErr [%s]", strings.Trim(pkiOut.String(), " \t\r\n"), strings.Trim(pkiErr.String(), " \t\r\n"))

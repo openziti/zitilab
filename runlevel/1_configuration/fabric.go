@@ -28,6 +28,9 @@ import (
 )
 
 func Fabric(trustDomain string, componentSpecs ...string) model.ConfigurationStage {
+	if len(componentSpecs) == 0 {
+		componentSpecs = []string{"*"}
+	}
 	return &fabric{
 		trustDomain:    trustDomain,
 		componentSpecs: componentSpecs,
