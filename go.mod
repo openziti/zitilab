@@ -1,13 +1,13 @@
 module github.com/openziti/zitilab
 
-go 1.18
+go 1.19
 
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.26
-	github.com/openziti/fablab v0.4.23
+	github.com/openziti/fablab v0.4.24
 	github.com/openziti/fabric v0.22.7
 	github.com/openziti/foundation/v2 v2.0.10
 	github.com/openziti/identity v1.0.30
@@ -84,7 +84,7 @@ require (
 	github.com/hashicorp/raft-boltdb v0.0.0-20220329195025-15018e9b97e0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/influxdata/influxdb1-client v0.0.0-20191209144304-8bf82d3c094d // indirect
-	github.com/jedib0t/go-pretty/v6 v6.4.4 // indirect
+	github.com/jedib0t/go-pretty/v6 v6.4.5 // indirect
 	github.com/jessevdk/go-flags v1.5.0 // indirect
 	github.com/jinzhu/copier v0.3.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
