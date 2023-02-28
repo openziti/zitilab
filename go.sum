@@ -433,8 +433,8 @@ github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/influxdata/influxdb1-client v0.0.0-20191209144304-8bf82d3c094d h1:/WZQPMZNsjZ7IlCpsLGdQBINg5bxKQ1K1sh6awxLtkA=
 github.com/influxdata/influxdb1-client v0.0.0-20191209144304-8bf82d3c094d/go.mod h1:qj24IKcXYK6Iy9ceXlo3Tc+vtHo9lIhSX5JddghvEPo=
-github.com/jedib0t/go-pretty/v6 v6.4.5 h1:O80DZUTgm2nuZ2yvWu+3kMpHKM/r4sN+lA2stt/AKNQ=
-github.com/jedib0t/go-pretty/v6 v6.4.5/go.mod h1:Ndk3ase2CkQbXLLNf5QDHoYb6J9WtVfmHZu9n8rk2xs=
+github.com/jedib0t/go-pretty/v6 v6.4.6 h1:v6aG9h6Uby3IusSSEjHaZNXpHFhzqMmjXcPq1Rjl9Jw=
+github.com/jedib0t/go-pretty/v6 v6.4.6/go.mod h1:Ndk3ase2CkQbXLLNf5QDHoYb6J9WtVfmHZu9n8rk2xs=
 github.com/jessevdk/go-flags v1.5.0 h1:1jKYvbxEjfUl0fmqTCOfonvskHHXMjBySTLW4y9LFvc=
 github.com/jessevdk/go-flags v1.5.0/go.mod h1:Fw0T6WPc1dYxT4mKEZRfG5kJhaTDP9pj1c2EWnYs/m4=
 github.com/jinzhu/copier v0.3.5 h1:GlvfUwHk62RokgqVNvYsku0TATCF7bAHVwEXoBh3iJg=
@@ -619,8 +619,8 @@ github.com/openziti/channel/v2 v2.0.26 h1:IIEnno26FuywcyCwCie1U7OHoB8HzuG95EzEnv
 github.com/openziti/channel/v2 v2.0.26/go.mod h1:zZO0bgVYY9FCDs2EMRakDl6wIfyOWuzgPzPL8EvQ5Ks=
 github.com/openziti/edge v0.24.95 h1:Lj7ycWVOXbqt3TK6NSGPWXj5bp3/5rX7rA+bR5wA8Nc=
 github.com/openziti/edge v0.24.95/go.mod h1:nVamtrBekK372q8bbKK/D6t0W7LBqQ+Miu0YE1u3od4=
-github.com/openziti/fablab v0.4.29 h1:NO0I5uxYdgV8JLw74nevH8qyuzSZ3iXLWct41H5xbfI=
-github.com/openziti/fablab v0.4.29/go.mod h1:M+swIyo3FvchRefAcawsxmUivtAjC/pB3/ytCPQWaeU=
+github.com/openziti/fablab v0.4.30 h1:dRxIumXAdIDnMwWQlZVzRzYVO8von62wQAHOVPRv8ag=
+github.com/openziti/fablab v0.4.30/go.mod h1:0p8OWUG4KB4UsBCFZanw831ZjemoVnww70FAIRWObeU=
 github.com/openziti/fabric v0.22.7 h1:o0k/QnCpVZPiC77fh/NoUVCoeQNhfBm4oOICcJsdkWc=
 github.com/openziti/fabric v0.22.7/go.mod h1:NITYnGTCeu0ENixTd7qXFzGyIDm5GkyJhxKYTnmFzjk=
 github.com/openziti/foundation/v2 v2.0.13 h1:viuP4E4Wc1u+yN8xX8MAI0Hj/AUeH7dOfqBoO/KppKw=
