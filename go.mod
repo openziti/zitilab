@@ -7,7 +7,7 @@ require (
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.26
-	github.com/openziti/fablab v0.4.34
+	github.com/openziti/fablab v0.4.35
 	github.com/openziti/fabric v0.22.7
 	github.com/openziti/foundation/v2 v2.0.15
 	github.com/openziti/identity v1.0.30
@@ -163,7 +163,7 @@ require (
 	go.mozilla.org/pkcs7 v0.0.0-20210826202110-33d05740a352 // indirect
 	go.opentelemetry.io/otel v1.11.1 // indirect
 	go.opentelemetry.io/otel/trace v1.11.1 // indirect
-	golang.org/x/crypto v0.6.0 // indirect
+	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/exp v0.0.0-20230202163644-54bba9f4231b // indirect
 	golang.org/x/image v0.3.0 // indirect
 	golang.org/x/mod v0.8.0 // indirect
