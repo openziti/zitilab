@@ -7,9 +7,9 @@ require (
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/michaelquigley/pfxlog v0.6.9
 	github.com/openziti/channel/v2 v2.0.26
-	github.com/openziti/fablab v0.4.35
+	github.com/openziti/fablab v0.4.36
 	github.com/openziti/fabric v0.22.7
-	github.com/openziti/foundation/v2 v2.0.15
+	github.com/openziti/foundation/v2 v2.0.17
 	github.com/openziti/identity v1.0.30
 	github.com/openziti/sdk-golang v0.18.26
 	github.com/openziti/transport/v2 v2.0.50
