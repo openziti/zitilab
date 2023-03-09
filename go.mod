@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/michaelquigley/pfxlog v0.6.9
+	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.26
 	github.com/openziti/fablab v0.4.36
 	github.com/openziti/fabric v0.22.7
