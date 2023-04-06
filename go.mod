@@ -8,7 +8,7 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.53
 	github.com/openziti/edge v0.24.224
-	github.com/openziti/fablab v0.4.39
+	github.com/openziti/fablab v0.4.40
 	github.com/openziti/fabric v0.22.76
 	github.com/openziti/foundation/v2 v2.0.18
 	github.com/openziti/identity v1.0.42
@@ -145,7 +145,7 @@ require (
 	github.com/speps/go-hashids v2.0.0+incompatible // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
-	github.com/spf13/cobra v1.6.1 // indirect
+	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.10.0 // indirect
