@@ -8,9 +8,9 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.53
 	github.com/openziti/edge v0.24.224
-	github.com/openziti/fablab v0.4.40
+	github.com/openziti/fablab v0.4.41
 	github.com/openziti/fabric v0.22.76
-	github.com/openziti/foundation/v2 v2.0.18
+	github.com/openziti/foundation/v2 v2.0.21
 	github.com/openziti/identity v1.0.42
 	github.com/openziti/sdk-golang v0.18.76
 	github.com/openziti/storage v0.1.45
