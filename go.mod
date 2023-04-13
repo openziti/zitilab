@@ -8,7 +8,7 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.53
 	github.com/openziti/edge v0.24.224
-	github.com/openziti/fablab v0.4.41
+	github.com/openziti/fablab v0.4.42
 	github.com/openziti/fabric v0.22.76
 	github.com/openziti/foundation/v2 v2.0.21
 	github.com/openziti/identity v1.0.42
@@ -164,7 +164,7 @@ require (
 	go.mozilla.org/pkcs7 v0.0.0-20210826202110-33d05740a352 // indirect
 	go.opentelemetry.io/otel v1.14.0 // indirect
 	go.opentelemetry.io/otel/trace v1.14.0 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/crypto v0.8.0 // indirect
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
 	golang.org/x/image v0.6.0 // indirect
 	golang.org/x/mod v0.8.0 // indirect

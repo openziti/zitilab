@@ -622,8 +622,8 @@ github.com/openziti/edge v0.24.224 h1:ZPl1dgTYlXgMuUhBal+Ie/5sfbPo0UMAPRSZch6xTe
 github.com/openziti/edge v0.24.224/go.mod h1:Q8YT9T5JDz31YwS1syF38ZE6S7CzNuS4ibnSlJMckNA=
 github.com/openziti/edge-api v0.25.9 h1:zw/cBTB/R6TA3PQxOCkVvProIFyQiHxC3GvVM1L+qR0=
 github.com/openziti/edge-api v0.25.9/go.mod h1:9JyKMYV3QdkBot/pj/ujFcV8Hyf8OUEiwtmPKQRqNHU=
-github.com/openziti/fablab v0.4.41 h1:GhtooflqonNBVV/GIwfifWcAzJc7JyxDd7UCL0tKiNQ=
-github.com/openziti/fablab v0.4.41/go.mod h1:xhOo/uQ3y3Upvb7fduQRSIUXi+ReTKGFHer0QDSzLwc=
+github.com/openziti/fablab v0.4.42 h1:5ZT1PqucpLzeeCNv+njD6pO3Y0UfMgw7LPZ96ggW+Kk=
+github.com/openziti/fablab v0.4.42/go.mod h1:piHIFKKxgfMm/GwESce5UrgFGVjIwGWrDRKGGofQyH4=
 github.com/openziti/fabric v0.22.76 h1:jHheigq9YaFF0NuuyEPZZWjmdBy1aAKiJHhgLxhXURo=
 github.com/openziti/fabric v0.22.76/go.mod h1:u3FBErE9yUpE46M+tjitbBAQKQ6318PnRhe3wFvL9oM=
 github.com/openziti/foundation/v2 v2.0.21 h1:3EDDmSunsbd2DlULuY/vqj12LHRZOknH/m3lf6Ws5Nw=
@@ -871,8 +871,8 @@ golang.org/x/crypto v0.0.0-20210921155107-089bfa567519/go.mod h1:GvvjBRRGRdwPK5y
 golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.1.0/go.mod h1:RecgLatLF4+eUMCP1PoPZQb+cVrJcOPbHkTkbkB9sbw=
-golang.org/x/crypto v0.7.0 h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A=
-golang.org/x/crypto v0.7.0/go.mod h1:pYwdfH91IfpZVANVyUOhSIPZaFoJGxTFbZhFTx+dXZU=
+golang.org/x/crypto v0.8.0 h1:pd9TJtTueMTVQXzk8E2XESSMQDj/U7OUu0PqJqPXQjQ=
+golang.org/x/crypto v0.8.0/go.mod h1:mRqEX+O9/h5TFCrQhkgjo2yKi0yYA+9ecGkdQoHrywE=
 golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
 golang.org/x/exp v0.0.0-20190306152737-a1d7652674e8/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
 golang.org/x/exp v0.0.0-20190510132918-efd6b22b2522/go.mod h1:ZjyILWgesfNpC6sMxTJOJm9Kp84zZh5NQWvqDGG3Qr8=
