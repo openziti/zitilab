@@ -2,6 +2,7 @@ package edge
 
 import (
 	"fmt"
+	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
@@ -20,7 +21,10 @@ func InitEdgeRouters(componentSpec string, concurrency int) model.Action {
 func (action *initEdgeRoutersAction) Execute(m *model.Model) error {
 	return m.ForEachComponent(action.componentSpec, action.concurrency, func(c *model.Component) error {
 		if err := zitilib_actions.EdgeExec(m, "delete", "edge-router", c.PublicIdentity); err != nil {
-			return err
+			pfxlog.Logger().
+				WithError(err).
+				WithField("router", c.PublicIdentity).
+				Warn("unable to delete router (may not be present")
 		}
 
 		return action.createAndEnrollRouter(c)
