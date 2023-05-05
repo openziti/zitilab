@@ -622,8 +622,8 @@ github.com/openziti/edge v0.24.239 h1:S7bAy/BfpGpKwXnfWuGgWpfjUEuJ5iwZojTxu9W8DO
 github.com/openziti/edge v0.24.239/go.mod h1:G6PLbcyib36KH9hN6tMacr2UMin15EmZioSGPPptJ0U=
 github.com/openziti/edge-api v0.25.11 h1:HHjDgoybPZGRZ+tM2udehI+U5Xv991iGED8E6CtDb9w=
 github.com/openziti/edge-api v0.25.11/go.mod h1:PBFMYELgr7JUuaCqHobq1U+WESsutzgEDoELU/9qFOg=
-github.com/openziti/fablab v0.4.43 h1:FiMwM82Yl1wgFsbrwWt0cu53ye6kVJoYcKLo8QIzA7Q=
-github.com/openziti/fablab v0.4.43/go.mod h1:eQ39FjiSxGdz1UR8L82ZLZ1uGC+svy/MU9vjyR/WY38=
+github.com/openziti/fablab v0.4.44 h1:LynNobrKKuUFOOk1VEjTbUkLlSWCOpMz1yJ6oWhFpAg=
+github.com/openziti/fablab v0.4.44/go.mod h1:GebK11NQXq9Q3Y/SORSLW9xWUFPQcQ2Fi9g1gj9KCm8=
 github.com/openziti/fabric v0.22.87 h1:Vc71NOFGLQapr8YZjx4p+f9+HHKm63o4kpt4LMjXTY4=
 github.com/openziti/fabric v0.22.87/go.mod h1:w/cleYmpE/coUjjCzoRbpO648QWwSee0V4H8mfyqCdg=
 github.com/openziti/foundation/v2 v2.0.22 h1:oPjp83CwrVnldkPQiDykhfH5D8EokBk2xK+s7qUvmLk=
@@ -1002,8 +1002,9 @@ golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9/go.mod h1:RxMgew5VJxzue5/jJ
 golang.org/x/sync v0.0.0-20201207232520-09787c993a3a/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
-golang.org/x/sync v0.1.0 h1:wsuoTGHzEhffawBOhz5CYhcrV4IdKZbEyZjBMuTp12o=
 golang.org/x/sync v0.1.0/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
+golang.org/x/sync v0.2.0 h1:PUR+T4wwASmuSTYdKjYHI5TD22Wy5ogLU5qZCOLxBrI=
+golang.org/x/sync v0.2.0/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sys v0.0.0-20180606202747-9527bec2660b/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180622082034-63fc586f45fe/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180823144017-11551d06cbcc/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
