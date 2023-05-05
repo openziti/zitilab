@@ -8,9 +8,9 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.58
 	github.com/openziti/edge v0.24.239
-	github.com/openziti/fablab v0.4.42
+	github.com/openziti/fablab v0.4.43
 	github.com/openziti/fabric v0.22.87
-	github.com/openziti/foundation/v2 v2.0.21
+	github.com/openziti/foundation/v2 v2.0.22
 	github.com/openziti/identity v1.0.45
 	github.com/openziti/sdk-golang v0.18.76
 	github.com/openziti/storage v0.1.49
@@ -170,8 +170,8 @@ require (
 	golang.org/x/image v0.7.0 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.7.0 // indirect
-	golang.org/x/term v0.7.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/term v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	gopkg.in/AlecAivazis/survey.v1 v1.8.7 // indirect
