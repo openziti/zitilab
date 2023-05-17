@@ -17,7 +17,7 @@ require (
 	github.com/openziti/transport/v2 v2.0.72
 	github.com/openziti/ziti v0.27.9
 	github.com/pkg/errors v0.9.1
-	github.com/sirupsen/logrus v1.9.1
+	github.com/sirupsen/logrus v1.9.2
 	go.etcd.io/bbolt v1.3.7
 	golang.org/x/net v0.10.0
 	google.golang.org/protobuf v1.30.0
