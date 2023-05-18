@@ -8,7 +8,7 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.58
 	github.com/openziti/edge v0.24.239
-	github.com/openziti/fablab v0.4.46
+	github.com/openziti/fablab v0.4.47
 	github.com/openziti/fabric v0.22.87
 	github.com/openziti/foundation/v2 v2.0.22
 	github.com/openziti/identity v1.0.45
@@ -17,7 +17,7 @@ require (
 	github.com/openziti/transport/v2 v2.0.72
 	github.com/openziti/ziti v0.27.9
 	github.com/pkg/errors v0.9.1
-	github.com/sirupsen/logrus v1.9.1
+	github.com/sirupsen/logrus v1.9.2
 	go.etcd.io/bbolt v1.3.7
 	golang.org/x/net v0.10.0
 	google.golang.org/protobuf v1.30.0
