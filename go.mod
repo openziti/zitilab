@@ -8,7 +8,7 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.58
 	github.com/openziti/edge v0.24.239
-	github.com/openziti/fablab v0.4.47
+	github.com/openziti/fablab v0.4.48
 	github.com/openziti/fabric v0.22.87
 	github.com/openziti/foundation/v2 v2.0.22
 	github.com/openziti/identity v1.0.45
@@ -150,7 +150,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.10.0 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
+	github.com/stretchr/testify v1.8.3 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/teris-io/shortid v0.0.0-20201117134242-e59966efd125 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect

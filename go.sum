@@ -622,8 +622,8 @@ github.com/openziti/edge v0.24.239 h1:S7bAy/BfpGpKwXnfWuGgWpfjUEuJ5iwZojTxu9W8DO
 github.com/openziti/edge v0.24.239/go.mod h1:G6PLbcyib36KH9hN6tMacr2UMin15EmZioSGPPptJ0U=
 github.com/openziti/edge-api v0.25.11 h1:HHjDgoybPZGRZ+tM2udehI+U5Xv991iGED8E6CtDb9w=
 github.com/openziti/edge-api v0.25.11/go.mod h1:PBFMYELgr7JUuaCqHobq1U+WESsutzgEDoELU/9qFOg=
-github.com/openziti/fablab v0.4.47 h1:Mq/BInPIEpT94mOjawysjjj3JnWRPqTErhu6wuOAv+A=
-github.com/openziti/fablab v0.4.47/go.mod h1:PQh24ee1zN2NHgVDDgzF2mUGmLqw2A7qfCJqLyOHxak=
+github.com/openziti/fablab v0.4.48 h1:hPZ5Pyd4xXJYU2DCiBPRwHTNAeG4Ul02GJkjoxWjG8M=
+github.com/openziti/fablab v0.4.48/go.mod h1:RDn6XpGw0hxxC7UEdqH59NPgRnwmsPm209zyW7VnkXE=
 github.com/openziti/fabric v0.22.87 h1:Vc71NOFGLQapr8YZjx4p+f9+HHKm63o4kpt4LMjXTY4=
 github.com/openziti/fabric v0.22.87/go.mod h1:w/cleYmpE/coUjjCzoRbpO648QWwSee0V4H8mfyqCdg=
 github.com/openziti/foundation/v2 v2.0.22 h1:oPjp83CwrVnldkPQiDykhfH5D8EokBk2xK+s7qUvmLk=
@@ -785,8 +785,9 @@ github.com/stretchr/testify v1.7.2/go.mod h1:R6va5+xMeoiuVRoj+gSkQ7d3FALtqAAGI1F
 github.com/stretchr/testify v1.7.4/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
-github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
 github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
+github.com/stretchr/testify v1.8.3 h1:RP3t2pwF7cMEbC1dqtB6poj3niw/9gnV4Cjg5oW5gtY=
+github.com/stretchr/testify v1.8.3/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/subosito/gotenv v1.2.0 h1:Slr1R9HxAlEKefgq5jn9U+DnETlIUa6HfgEzj0g5d7s=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/teris-io/shortid v0.0.0-20201117134242-e59966efd125 h1:3SNcvBmEPE1YlB1JpVZouslJpI3GBNoiqW7+wb0Rz7w=
