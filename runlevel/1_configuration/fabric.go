@@ -44,9 +44,9 @@ type fabric struct {
 
 func (f *fabric) getSpiffeId(c *model.Component, id string) string {
 	for _, tag := range c.Tags {
-		if strings.HasPrefix(tag, "spiffePathPrefix:") {
-			prefix := tag[:len("spifferPathPrefix:")]
-			return prefix + id
+		if strings.HasPrefix(tag, "spiffe:") {
+			prefix := tag[len("spiffe:"):]
+			return prefix + "/" + id
 		}
 	}
 	return id

@@ -72,6 +72,7 @@ func generateCert(name, ip, spiffeId string) error {
 	ziticli := cmd.NewRootCommand(nil, &pkiOut, &pkiErr)
 
 	args := []string{"pki", "create", "server",
+		"--server-name", name,
 		"--pki-root", model.PkiBuild(),
 		"--ca-name", name,
 		"--server-file", fmt.Sprintf("%s-server", name),
