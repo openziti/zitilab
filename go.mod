@@ -8,7 +8,7 @@ require (
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/channel/v2 v2.0.58
 	github.com/openziti/edge v0.24.239
-	github.com/openziti/fablab v0.4.51
+	github.com/openziti/fablab v0.4.52
 	github.com/openziti/fabric v0.22.87
 	github.com/openziti/foundation/v2 v2.0.24
 	github.com/openziti/identity v1.0.45
